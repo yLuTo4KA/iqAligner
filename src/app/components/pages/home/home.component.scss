@@ -1,0 +1,42 @@
+.home {
+}
+.main {
+    position: relative;
+    height: 100vh;
+    min-height: 820px;
+    display: flex;
+
+    align-items: center;
+    &::before{
+        content: "";
+        position: absolute;
+        top: 0;
+        right: -20px;
+        background-image: url('../../../../assets/bg-wawes.png');
+        background-size: cover;
+        height: 100%;
+        width: 50%;
+    }
+    .block {
+        padding: 35px;
+        width: 60%;
+        background-color: var(--elemBgColor);
+        border-radius: 20px;
+        z-index: 20;
+        backdrop-filter: blur(3px);
+        transition: all .5s;
+        &-title {
+            font-size: 40px;
+            line-height: 1.1;
+            margin-bottom: 10px;
+        }
+        &-subtitle {
+            font-size: 30px;
+            margin-bottom: 40px;
+        }
+        &-text {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+    }
+}

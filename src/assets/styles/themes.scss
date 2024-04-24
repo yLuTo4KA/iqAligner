@@ -1,0 +1,27 @@
+$gradientColorOne: #38B4F7;
+$gradientColorTwo: #CD09F7;
+$gradient: linear-gradient(to right, $gradientColorOne, $gradientColorTwo);
+
+// light
+$bgColor--light: #fff;
+$elemBgColor--light: #fbfbfbdd;
+$mainTextColor--light: #1B263B;
+
+// dark
+$bgColor--dark: #262626;
+$elemBgColor--dark: #262626dd;
+$mainTextColor--dark: #D6D6B1;
+
+
+@mixin lightTheme() {
+    --bgColor: #{$bgColor--light};
+    --elemBgColor: #{$elemBgColor--light};
+    --mainTextColor: #{$mainTextColor--light};
+    --gradient: #{$gradient};
+}
+@mixin darkTheme() {
+    --bgColor: #{$bgColor--dark};
+    --elemBgColor: #{$elemBgColor--dark};
+    --mainTextColor: #{$mainTextColor--dark};
+    --gradient: #{$gradient};
+}

@@ -1,0 +1,12 @@
+.footer {
+    width: 100%;
+    height: 300px;
+    background-color: var(--elemBgColor);
+    color: var(--mainTextColor);
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all .5s;
+}

@@ -1,0 +1,30 @@
+.header {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 35px;
+    background-color: var(--elemBgColor);
+    transition: background-color .5s;
+    backdrop-filter: blur(3px);
+    border-radius: 50px;
+    z-index: 10;
+
+    &__nav {
+        display: flex;
+
+        &-link {
+            margin-right: 45px;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+    &__profile-info {
+        display: flex;
+    }
+}
