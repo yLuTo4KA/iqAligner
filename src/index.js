@@ -2,7 +2,7 @@
 require('dotenv').config();
 const express = require("express");
 const bcrypt = require("bcrypt");
-const {UserModel, AnswerModel} = require("./config");
+const { UserModel, AnswerModel } = require("./config");
 const jwt = require("jsonwebtoken");
 const OpenAI = require("openai");
 
@@ -14,14 +14,21 @@ const openai = new OpenAI({
 
 
 
+
 const app = express();
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:4200"); // Указываем домен клиентского приложения
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    next();
+});
 
 const port = 2888;
 
 // CHECKER
-    const verifyToken = (req, res, next) => {
+const verifyToken = (req, res, next) => {
     const token = req.headers.authorization;
     if (!token) {
         return res.status(401).send("Unauthorized: No token provided");
@@ -34,84 +41,109 @@ const port = 2888;
         req.user = decoded;
         next();
     });
-    };
+};
 
 // GET
-    // profile
-        app.get("/api/profile/getAnswers", verifyToken, async(req, res) => {
-    try{
-        const {userId} = req.user;
-    
-        const userAnswers = await AnswerModel.find({user: userId});
-    
+app.get("/api/user", verifyToken, async (req, res) => {
+    try {
+        const token = req.headers.authorization;
+        const decodeToken = jwt.verify(token, 'secret key');
+        const userId = decodeToken.userId;
+
+        const user = await UserModel.findById(userId);
+        if(!user) {
+            return res.status(404).send("User not found!");
+        }
+        res.status(200).send(user);
+    } catch (e) {
+        console.log(e);
+        res.status(500).send("error data");
+    }
+});
+// profile
+app.get("/api/profile/getAnswers", verifyToken, async (req, res) => {
+    try {
+        const { userId } = req.user;
+
+        const userAnswers = await AnswerModel.find({ user: userId });
+
         res.status(200).send(userAnswers);
-    } catch(e){
+    } catch (e) {
         res.status(404).send(`Error: ${e}`);
     }
-        });
+});
+
 
 // POST
 
-    // reg - login
-        app.post("/api/reg", async (req, res) => {
+// reg - login
+app.post("/api/reg", async (req, res) => {
     try {
         const data = {
             username: req.body.username,
             password: req.body.password,
+            mail: req.body.mail,
+            phone: req.body.phone,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            avatar: req.body.avatar,
         }
-        const existingUser = await UserModel.findOne({username: data.username});
-        if(existingUser) {
-            throw new Error("Username занят!");
-        }else {
+        const existingUser = await UserModel.findOne({ username: data.username });
+        if (existingUser) {
+            return res.status(500).send("Username занят!");
+        } else {
             const saltRounds = 10;
             const hashedPass = await bcrypt.hash(data.password, saltRounds);
 
             data.password = hashedPass;
 
             const userData = await UserModel.insertMany(data);
+
+            const user = await UserModel.findOne({ username: data.username });
+            const token = jwt.sign({ userId: user._id }, 'secret key');
             console.log(userData);
-            res.status(201).send("Registration success");
+            res.status(200).send({token});
         }
-    } catch(e){
+    } catch (e) {
         console.error(`Registration error: ${e}`);
         res.status(500).send(e || "Ошибка при регистрации");
     }
-    
-    
-        });
-        app.post("/api/login", async (req, res) => {
+
+
+});
+app.post("/api/login", async (req, res) => {
     try {
         const data = {
             username: req.body.username,
             password: req.body.password
         }
-        const user = await UserModel.findOne({username: data.username});
+        const user = await UserModel.findOne({ username: data.username });
 
-        if(!user) {
-            return res.status(404).send("Username not found");
+        if (!user) {
+            return res.status(404).send("Такого логина не существует!");
         }
 
         const isValidPass = await bcrypt.compare(data.password, user.password);
 
-        if(!isValidPass) {
-            return res.status(404).send("Invalid Password");
+        if (!isValidPass) {
+            return res.status(404).send("Неправильный пароль!");
         }
 
-        const token = jwt.sign({userId: user._id}, 'secret key');
+        const token = jwt.sign({ userId: user._id }, 'secret key');
 
-        res.status(200).send({token});
-    } catch(e) {
+        res.status(200).send({ token });
+    } catch (e) {
         res.status(500).send(`Error: ${e}`);
     }
-        });
-    // GPT 
-        app.post("/api/chat/start", verifyToken, async(req, res) => {
-    try{
-        const {userId} = req.user;
+});
+// GPT 
+app.post("/api/chat/start", verifyToken, async (req, res) => {
+    try {
+        const { userId } = req.user;
         const completion = await openai.chat.completions.create({
-            messages: [{ role: "system", content: "Определять тип личности пользователя ( Меланхолик, Сангвинник, Холерик, Флегматик ) Так же определить профессии подходящие этому человку. "}, {role: "user", content: "Придумай 10 вопросов и отправь их в виде массива js"}],
+            messages: [{ role: "system", content: "Определять тип личности пользователя ( Меланхолик, Сангвинник, Холерик, Флегматик ) Так же определить профессии подходящие этому человку. " }, { role: "user", content: "Придумай 10 вопросов и отправь их в виде массива js" }],
             model: "gpt-3.5-turbo",
-          });
+        });
 
         const content = completion.choices[0].message.content;
         const startIdx = content.indexOf('[');
@@ -124,63 +156,63 @@ const port = 2888;
             questions: questions,
         });
         await newAnswer.save();
-        
-        res.status(200).send(questions);
-    }catch(e) {
-        res.status(404).send(e || "error"); 
-    }
-        });
 
-        app.post("/api/chat/getAnswer", verifyToken, async(req, res) => { // userAnswer, questions, chatId
-    try{
+        res.status(200).send(questions);
+    } catch (e) {
+        res.status(404).send(e || "error");
+    }
+});
+
+app.post("/api/chat/getAnswer", verifyToken, async (req, res) => { // userAnswer, questions, chatId
+    try {
         const userAnswer = req.body.userAnswer;
         const questions = req.body.questions;
         const chatId = req.body.chatId;
 
-        if(userAnswer.length !== 10) {
+        if (userAnswer.length !== 10) {
             return res.status(404).send("Not full answer!");
         };
-        
+
         const completion = await openai.chat.completions.create({
-                messages: [{ role: "system", content: `Определять тип личности пользователя ( Меланхолик, Сангвинник, Холерик, Флегматик ) Так же определить профессии подходящие этому человку.  Вот список вопросов = ${questions}, ответ должен быть в виде json type: (тип личности), profession: (массив с подходящими профессиями от 10шт до 15шт), description: (описание типа личности 100+ слов), analys: (подробный анализ ответов пользователя 200+ слов)`}, {role: "user", content: `Вот ответы на эти вопросы: ${userAnswer}`}],
-                model: "gpt-3.5-turbo",
+            messages: [{ role: "system", content: `Определять тип личности пользователя ( Меланхолик, Сангвинник, Холерик, Флегматик ) Так же определить профессии подходящие этому человку.  Вот список вопросов = ${questions}, ответ должен быть в виде json type: (тип личности), profession: (массив с подходящими профессиями от 10шт до 15шт), description: (описание типа личности 100+ слов), analys: (подробный анализ ответов пользователя 200+ слов)` }, { role: "user", content: `Вот ответы на эти вопросы: ${userAnswer}` }],
+            model: "gpt-3.5-turbo",
         });
         const updatedAnswer = await AnswerModel.findOneAndUpdate(
             { _id: chatId },
-            { aiAnswer: JSON.parse(completion.choices[0].message.content), userAnswer: userAnswer},
+            { aiAnswer: JSON.parse(completion.choices[0].message.content), userAnswer: userAnswer },
 
             { new: true }
         );
         res.status(200).send(updatedAnswer.aiAnswer);
-    }catch(e) {
-        res.status(404).send(e || "error"); 
+    } catch (e) {
+        res.status(404).send(e || "error");
     }
-        });
+});
 
 
 // PUT
 
-    // profile
-        app.put("/api/profile/update", verifyToken, async (req, res) => {
+// profile
+app.put("/api/profile/update", verifyToken, async (req, res) => {
     try {
         console.log(req.user);
         const authUser = req.user.userId;
-        
+
         const updateUserData = await UserModel.findOneAndUpdate(
-            {_id: authUser},
-            {$set: req.body},
-            {new: true}
+            { _id: authUser },
+            { $set: req.body },
+            { new: true }
         )
 
-        if(!updateUserData) {
+        if (!updateUserData) {
             return res.status(404).send("Not updated!");
         }
 
         res.status(200).send("Updated!");
-    }catch(e) {
+    } catch (e) {
         res.status(500).send("error");
     }
-        });
+});
 
 
 
@@ -232,7 +264,7 @@ const port = 2888;
 //         //     { assistant_id: "asst_HxCFyHcRdumF1T53UGaqqiXx" }
 //         // );
 //         console.log(123);
-        
+
 //         const sendMessage = await openai.beta.threads.messages.create(
 //             chat.thread,
 //             {role: "user", content: req.body.message}
