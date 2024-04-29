@@ -32,6 +32,21 @@ $IQaligner-theme: mat.define-light-theme((color: (primary: $IQaligner-primary,
 // that you are using.
 @include mat.all-component-themes($IQaligner-theme);
 
+// mat dialog 
+.mat-mdc-dialog-component-host {
+    display: flex !important;
+    flex-direction: column
+}
+// .mat-mdc-dialog-surface{
+//     background-color: initial !important;
+// }
+//
+
+// mat-form 
+.mat-mdc-form-field {
+    display: flex !important;
+}
+// --mat-form
 
 @import "./assets/styles/themes.scss";
 
@@ -86,6 +101,12 @@ button {
     border: none;
     cursor: pointer;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
 
 h1,
 h2,
@@ -107,10 +128,13 @@ main {
     margin: 0 auto;
 }
 
-.margin-right {
-    &20 {
-        margin-right: 20px;
+.margin {
+    &-right {
+        &20 {
+            margin-right: 20px;
+        }
     }
+    
 }
 
 .text {
@@ -128,7 +152,6 @@ main {
 
 .btn {
     display: flex;
-    justify-content: center;
     font-size: 14px;
     font-weight: bold;
 

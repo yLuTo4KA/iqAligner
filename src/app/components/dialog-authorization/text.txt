@@ -1,0 +1,151 @@
+// html 
+
+<button mat-mini-fab class="btn dialog-btn-close">
+    <mat-icon>close</mat-icon>
+</button>
+<mat-dialog-content class="dialog-content">
+    @if(isLoading) {
+    <mat-spinner></mat-spinner>
+    }
+
+    <header class="dialog-header">
+        <h1 class="dialog-title">{{registration ? "Регистрация" : "Вход"}}</h1>
+    </header>
+    <p>
+        <mat-form-field>
+            <mat-label>Логин</mat-label>
+            <input matInput placeholder="Логин" type="email" [(ngModel)]="userDataForm.value.username" maxlength="100">
+            <mat-icon matSuffix>person</mat-icon>
+            @if(userDataForm.validator){
+                <mat-error>Login is required</mat-error>
+            }
+        </mat-form-field>
+    </p>
+    @if(registration) {
+    <p>
+        <mat-form-field>
+            <mat-label>Почта</mat-label>
+            <input matInput placeholder="Почта" type="text" [(ngModel)]="userDataForm.value.mail">
+            <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field>
+            <mat-label>Имя</mat-label>
+            <input matInput placeholder="Имя" type="text" [(ngModel)]="userDataForm.value.firstName">
+            <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field>
+            <mat-label>Фамилия</mat-label>
+            <input matInput placeholder="Фамилия" type="text" [(ngModel)]="userDataForm.value.lastName">
+            <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field>
+            <mat-label>Телефон</mat-label>
+            <input matInput placeholder="Телефон" type="text" [(ngModel)]="userDataForm.value.phone">
+            <mat-icon matSuffix>phone</mat-icon>
+        </mat-form-field>
+    </p>
+    }
+    <p>
+        <mat-form-field>
+            <mat-label>Пароль</mat-label>
+            <input matInput placeholder="Пароль" [type]="passwordVisibility ? 'text' : 'password'"
+                [(ngModel)]="userDataForm.value.password">
+            <mat-icon (click)="passwordVisibility = !passwordVisibility" matSuffix
+                style="cursor: pointer;">{{passwordVisibility ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </mat-form-field>
+    </p>
+</mat-dialog-content>
+<mat-dialog-actions class="dialog-actions">
+    @if(error !== null) {
+    <p class="dialog-error">
+        {{error}}
+    </p>
+    }
+    @if(!registration) {
+    <button mat-raised-button class="dialog-button" [disabled]="false"
+        (click)="handleOnLogin(userDataForm.value.username, userDataForm.value.password)">Войти</button>
+    }@else {
+    <button mat-raised-button class="dialog-button" (click)="handleOnReg(userDataForm.value)">Зарегестрироваться</button>
+    }
+    <button class="dialog-link" (click)="registration = !registration">{{registration ? "Есть аккаунт? Войти" : "Нет аккаунта? Зарегестрироваться"}}</button>
+</mat-dialog-actions>
+
+// //html
+
+// js 
+
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field'
+import { MatInputModule } from "@angular/material/input";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatDialog } from '@angular/material/dialog';
+
+import { User } from "../models/User.interface";
+
+import { AuthorizationService } from '../services/authorization/authorization.service';
+
+
+@Component({
+  selector: 'app-dialog-authorization',
+  standalone: true,
+  imports: [FormsModule, MatIconModule, MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule, HttpClientModule, MatProgressSpinnerModule],
+  templateUrl: './dialog-authorization.component.html',
+  styleUrl: './dialog-authorization.component.scss'
+})
+export class DialogAuthorizationComponent implements OnInit {
+  userDataForm: FormGroup;
+  isLoading: boolean = false;
+  error: string | null = null;
+  constructor(private authService: AuthorizationService, private matDialog: MatDialog, private fb: FormBuilder) {
+    this.userDataForm = this.fb.group({
+      username: ['', [Validators.required]],
+      mail: ['', [Validators.required, Validators.email]],
+      firstName: ['', [Validators.required]],
+      lastName: [''],
+      phone: [''],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      avatar: ['']
+    })
+  }
+
+  passwordVisibility: boolean = false;
+  registration: boolean = false;
+  ngOnInit(): void {
+    this.authService.loading$.subscribe(isLoading => {
+      this.isLoading = isLoading;
+    });
+    this.authService.error$.subscribe(error => {
+      this.error = error;
+    })
+  }
+  
+  handleOnLogin(username: string, password: string): void {
+    console.log(this.userDataForm)
+    this.authService.login(username, password).subscribe((response) => {
+      console.log(response);
+      this.matDialog.closeAll();
+    });
+  };
+  handleOnReg(userData: User): void {
+    this.authService.registration(userData).subscribe((response) => {
+      this.matDialog.closeAll();
+    })
+  }
+
+}
+
+
+// // js
