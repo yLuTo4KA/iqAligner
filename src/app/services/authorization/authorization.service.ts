@@ -31,6 +31,9 @@ export class AuthorizationService {
   getToken(): string | null {
     return localStorage.getItem("token");
   }
+  isLoggin(): boolean {
+    return !!this.getToken();
+  }
   removeToken(): void {
     localStorage.removeItem("token");
     this.tokenSubject.next(null);

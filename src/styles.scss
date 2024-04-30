@@ -70,6 +70,9 @@ body {
         @include lightTheme;
         transition: all .5s;
     }
+    &-content {
+        min-height: 100vh;
+    }
     position: relative;
     width: 100%;
     min-width: 0px;
