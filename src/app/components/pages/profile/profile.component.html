@@ -1,1 +1,47 @@
-<p>profile works!</p>
+<!-- @if(userData) {
+    <div class="profile">
+        <div class="profile-user">
+            <div class="profile-user-avatar">
+                <img [src]="userData.avatar" alt="profile" class="img">
+            </div>
+            <div class="profile-user-data">
+                <div class="profile-user-data-userinfo">
+                    <h2 class="profile-user-data-userinfo-username">
+                        {{userData.username}}
+                    </h2>
+                    <p class="profile-user-data-userinfo-firstname">
+                        {{userData.firstName}} {{userData.lastName}}
+                    </p>
+                </div>
+                <button mat-fab extended class="btn --box btn--gradient" [disabled]="false">Изменить профиль</button>
+            </div>
+        </div>
+    <div class="devider"></div>
+    <div class="block">
+        hello!  
+    </div>
+</div>
+
+} -->
+
+@if(userData) {
+<div class="profile">
+    <div class="profile__header">
+        <div class="profile__header-content">
+            <div class="profile__avatar">
+                <img [src]="userData.avatar" alt="avatar" class="profile__avatar-img img">
+            </div>
+            <div class="profile__user-data">
+                <div class="profile__user-info">
+                    <h2 class="profile__username">{{userData.username}}</h2>
+                    <p class="profile__fullname">{{userData.firstName + " " + userData.lastName}}</p>
+                </div>
+                <button mat-fab extended class="btn --box btn--gradient">Изменить профиль</button>
+            </div>
+        </div>
+        <div class="profile__devider"></div>
+        
+    </div>
+    <app-bot-message [answer]="fakeAnswer"></app-bot-message>
+</div>
+}

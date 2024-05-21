@@ -28,6 +28,7 @@ export class DialogsService {
     } else {
       this.openAuthDialog();
     }
+    // this.matDialog.open(DialogChatComponent, {width: '600px'});
   }
   
   closeDialog(): void {

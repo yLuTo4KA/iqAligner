@@ -1,0 +1,10 @@
+.user-message {
+    flex-direction: row-reverse;
+    &__text {
+        border-top-right-radius: 0;
+        margin-right: 5px;
+    }
+    &__name {
+        text-align: right;
+    }
+}

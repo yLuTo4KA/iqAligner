@@ -1,0 +1,12 @@
+@if(userData) {
+    <div class="message user-message">
+        <div class="message-avatar">
+            <img [src]="userData.avatar" alt="bot" class="img">
+        </div>
+        <div class="message-text user-message__text">
+            <p class="user-message__name text-gradient">{{userData.username}}</p>
+            <p>{{text}}</p>
+            <div class="message-date">{{date | date:'shortTime'}}</div>
+        </div>
+    </div>
+}

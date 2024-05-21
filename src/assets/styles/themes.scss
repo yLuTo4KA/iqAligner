@@ -6,22 +6,28 @@ $gradient: linear-gradient(to right, $gradientColorOne, $gradientColorTwo);
 $bgColor--light: #fff;
 $elemBgColor--light: #fbfbfbdd;
 $mainTextColor--light: #1B263B;
+$placeholderColor--light: #1b263b98;
 
 // dark
 $bgColor--dark: #262626;
 $elemBgColor--dark: #262626dd;
 $mainTextColor--dark: #D6D6B1;
+$placeholderColor--dark: #d6d6b186;
 
 
 @mixin lightTheme() {
     --bgColor: #{$bgColor--light};
     --elemBgColor: #{$elemBgColor--light};
     --mainTextColor: #{$mainTextColor--light};
+    --placeholderColor: #{$placeholderColor--light};
     --gradient: #{$gradient};
+    --oppositeMainTextColor: #{$mainTextColor--dark};
 }
 @mixin darkTheme() {
     --bgColor: #{$bgColor--dark};
     --elemBgColor: #{$elemBgColor--dark};
     --mainTextColor: #{$mainTextColor--dark};
+    --placeholderColor: #{$placeholderColor--dark};
     --gradient: #{$gradient};
+    --oppositeMainTextColor: #{$mainTextColor--light};
 }

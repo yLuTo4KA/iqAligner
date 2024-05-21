@@ -1,4 +1,4 @@
-<div [class]="['page', theme]">
+<div class="page">
   <app-header></app-header>
   <main class="page-content">
     <div class="container">
@@ -7,7 +7,7 @@
   </main>
   <app-footer></app-footer>
   <button mat-fab class="btn btn--mini theme--toggler" (click)="handleChangeTheme()">
-    <mat-icon>{{ theme === '--light' ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    <mat-icon>{{ theme === 'light' ? 'light_mode' : 'dark_mode' }}</mat-icon>
   </button>
   <button mat-fab matTooltip="open chat" class="btn btn--mini chat-button" (click)="handleOpenChat()"><mat-icon>psychology</mat-icon></button>
 </div>

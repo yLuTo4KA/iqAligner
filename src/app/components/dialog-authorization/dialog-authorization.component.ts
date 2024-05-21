@@ -53,8 +53,7 @@ export class DialogAuthorizationComponent implements OnInit {
       mail: new FormControl("", [Validators.required, Validators.email]),
       phone: new FormControl("", [Validators.minLength(12), Validators.maxLength(12)]),
       firstName: new FormControl("", [Validators.required, Validators.minLength(3)]),
-      lastName: new FormControl("", [Validators.maxLength(55)]),
-      avatar: new FormControl("")
+      lastName: new FormControl("", [Validators.maxLength(55)])
     })
   }
 
@@ -77,8 +76,6 @@ export class DialogAuthorizationComponent implements OnInit {
 
   handleOnLogin(loginData: login): void {
     this.loginFormSubmit = true;
-    console.log(this.loginForm.controls['username'].dirty);
-    console.log(this.loginForm.controls['username'].invalid);
     const loginFormValid = this.loginForm.valid;
     if (loginFormValid) {
       this.authService.login(loginData.username, loginData.password).subscribe((response) => {

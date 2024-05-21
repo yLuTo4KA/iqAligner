@@ -1,4 +1,4 @@
-<button mat-mini-fab class="btn dialog-btn-close" (click)="closeModal()">
+<button mat-mini-fab class="btn btn--close dialog-btn-close" (click)="closeModal()">
     <mat-icon>close</mat-icon>
 </button>
 <mat-dialog-content class="dialog-content">
@@ -7,7 +7,7 @@
     }
 
     <header class="dialog-header">
-        <h1 class="dialog-title">{{registration ? "Регистрация" : "Вход"}}</h1>
+        <h1 class="dialog-title text-gradient">{{registration ? "Регистрация" : "Вход"}}</h1>
     </header>
     @if(!registration) {
     <form [formGroup]="loginForm">
@@ -73,7 +73,7 @@
                 <mat-error>Заполните поле!</mat-error>
                 }
                 @if(regForm.controls['mail'].errors?.['email']){
-                <mat-error>not valid mail!</mat-error>
+                <mat-error>Некорректная почта</mat-error>
                 }
                 }
             </mat-form-field>
@@ -140,5 +140,5 @@
     }@else {
     <button mat-raised-button class="dialog-button" (click)="handleOnReg(regForm.value)">Зарегестрироваться</button>
     }
-    <button class="dialog-link" (click)="handleChangeForm()">{{registration ? "Есть аккаунт? Войти" : "Нет аккаунта? Зарегестрироваться"}}</button>
+    <button class="dialog-link text-gradient" (click)="handleChangeForm()">{{registration ? "Есть аккаунт? Войти" : "Нет аккаунта? Зарегестрироваться"}}</button>
 </mat-dialog-actions>

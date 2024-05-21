@@ -1,39 +1,63 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, finalize, Observable, tap, throwError } from 'rxjs';
 import { User } from "../../models/User.interface";
+import { Answer } from '../../models/Answers.interface';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<any | null>(null);
-  private apiUrl: string = "http://localhost:2888/api/user";
+  private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
+  private answersSubject: BehaviorSubject<Answer | null> = new BehaviorSubject<Answer | null>(null);
+  private loadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
+  loading$ = this.loadingSubject.asObservable();
+  answers$ = this.answersSubject.asObservable();
+
+  private apiUrl: string = "http://localhost:2888/api/profile";
 
   constructor(private http: HttpClient) { }
 
-  getUser(token: string): Observable<User | null> {
-    const headers = new HttpHeaders({ 'authorization': token });
-    return this.http.get<User>(this.apiUrl, { headers });
-  }
-
-  setUser(user: User): void {
-    this.userSubject.next(user);
-  }
-
-  fetchUser(token: string): void {
-    this.getUser(token).subscribe(
-      {
-        next: user => {
-          if (user !== null) {
-            this.setUser(user);
-          }
-        },
-        error: error => {
-          console.log(error);
+  getUser(): void {
+    this.http.get<User>(this.apiUrl + '/getUser', {}).subscribe({
+      next: user => {
+        if(user) {
+          this.userSubject.next(user);
         }
+      },
+      error: error => {
+        console.log(error);
       }
+    });
+  }
+  
+  getAllAnswer(): Observable<any> {
+    this.loadingSubject.next(true);
+    return this.http.get<Answer>(this.apiUrl + '/getAnswers', {}).pipe(
+      tap(response => {
+        if(response) {
+          this.answersSubject.next(response);
+        }
+      }),
+      finalize(() => {
+        this.loadingSubject.next(false);
+      }),
+      catchError((error: HttpErrorResponse) => {
+        if(error.status === 404) {
+          console.error("Ошибка загрузки данных")
+        }
+        return throwError(() => "Ошибка авторизации");
+      })
     )
+  }
+
+  deauthUser(): void {
+    this.userSubject.next(null);
+  }
+
+  getUserObservable(): Observable<User | null> {
+    return this.userSubject.asObservable();
   }
 }

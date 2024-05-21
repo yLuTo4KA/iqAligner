@@ -1,0 +1,25 @@
+<div class="message bot-message">
+    <div class="message-avatar">
+        <img src="../../../assets/botAvatar.png" alt="bot" class="img">
+    </div>
+    <div class="message-text bot-message-text">
+        <p class="text-gradient">bot</p>
+        @if(!answer) {
+        <p>{{printedText}}</p>
+        }@else {
+        <p>Скорее всего ваш тип:</p>
+        <p class="text-gradient bot-message-type">{{answer.type}}</p>
+        <p style="margin-bottom: 10px;">Подходящие вам профессии: </p>
+        <div class="bot-message-desc">
+            @for(profession of answer.profession; track profession) {
+            <div class="bot-message-profession">
+                <p class="bot-message-profession-text">{{profession}}</p>
+            </div>
+            }
+        </div>
+        }
+        <div class="message-date">
+            {{date | date:'shortTime'}}
+        </div>
+    </div>
+</div>

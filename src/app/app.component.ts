@@ -7,6 +7,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
 
 import { DialogsService } from './services/dialogs/dialogs.service';
+import { ThemeService } from './services/theme/theme.service';
 
 @Component({
     selector: 'app-root',
@@ -15,13 +16,20 @@ import { DialogsService } from './services/dialogs/dialogs.service';
     styleUrl: './app.component.scss',
     imports: [RouterOutlet, HeaderComponent, FooterComponent, MatFabButton, MatIconModule, HttpClientModule]
 })
-export class AppComponent {
-  public theme: String = '--light';
+export class AppComponent implements OnInit{
+  public theme!: string;
 
-  constructor(private dialogsService: DialogsService) {}
-
+  constructor(private dialogsService: DialogsService, private themeService: ThemeService) {}
+  ngOnInit(): void {
+    this.themeService.theme$.subscribe(theme => {
+      this.theme = theme;
+      this.themeService.setTheme(theme);
+    })
+  }
+  
   handleChangeTheme(): void {
-    this.theme = this.theme === '--light' ? '--dark' : '--light';
+    this.theme = this.theme === 'dark' ? 'light' : 'dark';
+    this.themeService.setTheme(this.theme);
   }
 
 
