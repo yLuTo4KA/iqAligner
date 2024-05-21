@@ -6,8 +6,11 @@
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.2.4",
-    "openai": "^4.33.0"
+    "multer": "^1.4.5-lts.1",
+    "openai": "^4.33.0",
+    "path": "^0.12.7"
   }
 }

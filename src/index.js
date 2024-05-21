@@ -1,6 +1,9 @@
 // SETUPS
 require('dotenv').config();
 const express = require("express");
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 const bcrypt = require("bcrypt");
 const { UserModel, AnswerModel } = require("./config");
 const jwt = require("jsonwebtoken");
@@ -24,6 +27,7 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
     next();
 });
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const port = 2888;
 
@@ -44,7 +48,7 @@ const verifyToken = (req, res, next) => {
 };
 
 // GET
-app.get("/api/user", verifyToken, async (req, res) => {
+app.get("/api/profile/getUser", verifyToken, async (req, res) => {
     try {
         const token = req.headers.authorization;
         const decodeToken = jwt.verify(token, 'secret key');
@@ -54,7 +58,12 @@ app.get("/api/user", verifyToken, async (req, res) => {
         if(!user) {
             return res.status(404).send("User not found!");
         }
-        res.status(200).send(user);
+        const avatarUrl = `${req.protocol}://${req.get('host')}${user.avatar}`;
+
+        res.status(200).send({
+            ...user._doc,
+            avatar: avatarUrl
+        });
     } catch (e) {
         console.log(e);
         res.status(500).send("error data");
@@ -65,7 +74,7 @@ app.get("/api/profile/getAnswers", verifyToken, async (req, res) => {
     try {
         const { userId } = req.user;
 
-        const userAnswers = await AnswerModel.find({ user: userId });
+        const userAnswers = await AnswerModel.find({ user: userId, aiAnswer: {$ne: null}});
 
         res.status(200).send(userAnswers);
     } catch (e) {
@@ -137,27 +146,22 @@ app.post("/api/login", async (req, res) => {
     }
 });
 // GPT 
+const def = "Придумай 10 вопросов и отправь их в виде массива js";
 app.post("/api/chat/start", verifyToken, async (req, res) => {
     try {
         const { userId } = req.user;
         const completion = await openai.chat.completions.create({
-            messages: [{ role: "system", content: "Определять тип личности пользователя ( Меланхолик, Сангвинник, Холерик, Флегматик ) Так же определить профессии подходящие этому человку. " }, { role: "user", content: "Придумай 10 вопросов и отправь их в виде массива js" }],
+            messages: [{ role: "system", content: "Определять тип личности пользователя ( Меланхолик, Сангвинник, Холерик, Флегматик ) Так же определить профессии подходящие этому человку. " }, { role: "user", content: "Придумай 10 вопросов состоящих из минимум 15 слов до 30 довольно углубленных для опредления точного типа личности пользовтеля и по 4 варианта ответа для каждого и отправь их в виде json questions: [{вопрос (только вопрос без вариантов ответа в нем), [4ответа]}"}],
             model: "gpt-3.5-turbo",
         });
-
-        const content = completion.choices[0].message.content;
-        const startIdx = content.indexOf('[');
-        const endIdx = content.lastIndexOf(']');
-        const questionsString = content.substring(startIdx, endIdx + 1);
-
-        const questions = JSON.parse(questionsString);
+        const questions = JSON.parse(completion.choices[0].message.content);
         const newAnswer = new AnswerModel({
             user: userId,
-            questions: questions,
+            questions,
         });
         await newAnswer.save();
 
-        res.status(200).send(questions);
+        res.status(200).send({chatId: newAnswer._id, questions});
     } catch (e) {
         res.status(404).send(e || "error");
     }
@@ -169,7 +173,7 @@ app.post("/api/chat/getAnswer", verifyToken, async (req, res) => { // userAnswer
         const questions = req.body.questions;
         const chatId = req.body.chatId;
 
-        if (userAnswer.length !== 10) {
+        if (userAnswer.length < questions.length) {
             return res.status(404).send("Not full answer!");
         };
 

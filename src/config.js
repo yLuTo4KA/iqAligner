@@ -40,7 +40,7 @@ const UserSchema = new mongoose.Schema({
     avatar: {
         type: String,
         required: false,
-        default: null,
+        default: "/uploads/default.png",
     }
 })
 
@@ -55,7 +55,7 @@ const AnswerSchema = new mongoose.Schema({
         default: Date.now(),
     },
     questions: {
-        type: [String],
+        type: {},
         required: true
     },
     aiAnswer: {
