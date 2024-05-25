@@ -10,7 +10,8 @@ import { UserService } from '../user/user.service';
 })
 export class AuthorizationService {
   
-  private apiUrl: string = "http://localhost:2888/api";
+  private apiUrl: string = "http://51.21.85.46:8000/api";
+  // private apiUrl: string = "http://localhost:2888/api";
   private loadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private tokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(this.getToken());
   private errorSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);

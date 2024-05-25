@@ -1,13 +1,56 @@
 <div class="home">
-    <section class="main">
-        <div class="block shadow">
-            <h1 class="title block-title text-gradient">Узнайте свой тип личности</h1>
-            <h2 class="block-subtitle">И идеальную для вас профессию</h2>
-            <div class="block-text">Наш сайт использует передовую AI для определения вашего типа личности и нахождения подходящей профессии. Просто ответьте на несколько вопросов, и мы поможем вам раскрыть ваш потенциал и найти идеальное направление для развития карьеры.</div>
-            <div class="block-menu">
-                <button mat-fab extended class="btn btn--block btn--gradient margin-right20 block-menu-button" (click)="handleOpenChat()">Узнать тип</button>
-                <button mat-fab extended class="btn btn--block btn--border">Подробнее</button>
+    <section class="section main">
+            <div class="block shadow">
+                <h1 class="title block-title text-gradient">Узнайте свой тип личности</h1>
+                <h2 class="block-subtitle">И идеальную для вас профессию</h2>
+                <div class="block-text">Наш сайт использует передовую AI для определения вашего типа личности и нахождения подходящей профессии. Просто ответьте на несколько вопросов, и мы поможем вам раскрыть ваш потенциал и найти идеальное направление для развития карьеры.</div>
+                <div class="block-menu">
+                    <button mat-fab extended class="btn btn--block btn--gradient margin-right20 block-menu-button" (click)="handleOpenChat()">Узнать тип</button>
+                    <button mat-fab extended class="btn btn--block btn--border">Подробнее</button>
+                </div>
             </div>
+    </section>
+    <section class="section types">
+        <h1 class="types__title">
+            <span class="types__title-big">Помощник iQaligner</span>
+            <span class="text-gradient">Для тех кто хочет определить свой тип личности</span>
+        </h1>
+        <p class="types__subtitle">
+            <span class="holerik">Холерик, </span>
+            <span class="flegmatic">Флегматик, </span>
+            <span class="sangvinnik">Сангвинник, </span>
+            <span class="melancholic">Меланхолик. </span>
+            <span>И узнать подходящие вам профессии!</span>
+        </p>
+        <div class="types__buttons">
+            <button mat-fab extended class="btn btn--block btn--gradient margin-right20 block-menu-button" (click)="handleOpenChat()">Узнать тип</button>
         </div>
+        <div class="types__images">
+            <img class="types__images-img" src="../../../../assets/laptop.png" alt="laptop">
+        </div>
+    </section>
+    <section class="section stages">
+            <h1 class="section-title">Как это работает?</h1>
+            <ul class="stages__list">
+                <li class="stage stages__item">
+                    <h3 class="stage__count">
+                        Шаг 1
+                    </h3>
+                    <h2 class="stage__title text-gradient">
+                        Регистрация
+                    </h2>
+                    <p class="stage-text">Зарегистрируйтесь на нашем сайте и создайте свой профиль.</p>
+                </li>
+                <li class="stage stages__item">
+                    <h3 class="stage__count">
+                        Шаг 2
+                    </h3>
+                </li>
+                <li class="stage stages__item">
+                    <h3 class="stage__count">
+                        Шаг 3
+                    </h3>
+                </li>
+            </ul>
     </section>
 </div>

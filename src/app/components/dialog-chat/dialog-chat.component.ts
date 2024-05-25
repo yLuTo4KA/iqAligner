@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,6 +22,7 @@ import { BotMessageTypingComponent } from './botMessageTyping/bot-message-typing
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { UserService } from '../../services/user/user.service';
+import { Subscription } from 'rxjs';
 
 
 
@@ -32,10 +33,13 @@ import { UserService } from '../../services/user/user.service';
   templateUrl: './dialog-chat.component.html',
   styleUrl: './dialog-chat.component.scss'
 })
-export class DialogChatComponent implements AfterViewInit, OnInit {
+export class DialogChatComponent implements AfterViewInit, OnInit, OnDestroy {
+
+  private subscriptions = new Subscription();
 
   @ViewChild('chatArea', { read: ViewContainerRef }) chatArea!: ViewContainerRef;
   @ViewChild('area') area!: ElementRef<HTMLDivElement>;
+
   public userData: User | null = null;
   public disable: boolean = false;
   public isShowAnswers: boolean = false;
@@ -56,12 +60,14 @@ export class DialogChatComponent implements AfterViewInit, OnInit {
   public resultLoading: boolean = false;
   public result: Result | null = null;
 
-  constructor(private userService: UserService , private dialogsService: DialogsService, private chatService: ChatService) { }
+  constructor(private userService: UserService, private dialogsService: DialogsService, private chatService: ChatService) { }
   ngOnInit(): void {
-    this.userService.getUserObservable().subscribe({
-      next: userData => this.userData = userData,
-      error: error => console.log(error),
-    }); 
+    this.subscriptions.add(
+      this.userService.getUserObservable().subscribe({
+        next: userData => this.userData = userData,
+        error: error => console.log(error),
+      })
+    );
     this.initChat();
   }
   ngAfterViewInit(): void {
@@ -70,13 +76,15 @@ export class DialogChatComponent implements AfterViewInit, OnInit {
     }, 0);
   }
   initChat(): void {
-    this.chatService.getQuestions().subscribe(response => {
-      this.chatId = response.chatId;
-      this.questions = response.questions;
-    })
+    this.subscriptions.add(
+      this.chatService.getQuestions().subscribe(response => {
+        this.chatId = response.chatId;
+        this.questions = response.questions;
+      })
+    );
   }
 
-  startChat():void {
+  startChat(): void {
     this.started = true;
     this.nextQuestion();
   }
@@ -89,20 +97,20 @@ export class DialogChatComponent implements AfterViewInit, OnInit {
       if (this.answersList.length === this.questions.questions.length && this.chatId) {
         this.disable = true;
         this.resultLoading = true;
-        this.chatService.getResult(this.answersList, this.questions.questions, this.chatId).subscribe(response => {
-          console.log(response);
-          if(response.analys) {
-            this.createBotMessage(response.analys);
-          }
-          this.resultLoading = false;
-        })
-
+        this.subscriptions.add(
+          this.chatService.getResult(this.answersList, this.questions.questions, this.chatId).subscribe(response => {
+            if (response) {
+                this.createBotMessage('', response);
+            }
+            this.resultLoading = false;
+          })
+        );
       } else {
         this.nextQuestion();
       }
     }
   }
-  
+
 
   pickAnswer(answer: string) {
     this.message = answer;
@@ -116,9 +124,14 @@ export class DialogChatComponent implements AfterViewInit, OnInit {
     this.questionIndex++;
   }
 
-  createBotMessage(text: string) {
+  createBotMessage(text?: string, answer?: Result) {
     const botMessage = this.chatArea.createComponent(BotMessageComponent);
-    botMessage.instance.text = text;
+    if (answer) {
+      botMessage.instance.answer = answer;
+    }
+    if(text) {
+      botMessage.instance.text = text;
+    }
   }
 
   createUserMessage() {
@@ -137,5 +150,8 @@ export class DialogChatComponent implements AfterViewInit, OnInit {
 
   closeModal() {
     this.dialogsService.closeDialog();
+  }
+  ngOnDestroy():void {
+    this.subscriptions.unsubscribe();
   }
 }

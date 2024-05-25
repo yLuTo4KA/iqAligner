@@ -57,6 +57,7 @@ $IQaligner-theme: mat.define-light-theme((color: (primary: $IQaligner-primary,
 .mat-mdc-input-element::placeholder {
     color: var(--placeholderColor) !important;
 }
+
 // --mat-form
 
 
@@ -73,6 +74,10 @@ $gradientLightClrOne: rgba(56, 180, 247, 0.192); // Прозрачность 80%
 $gradientLightClrTwo: rgba(205, 9, 247, 0.134); // Прозрачность 80%
 $gradientLight: linear-gradient(to bottom right, $gradientLightClrOne, $gradientLightClrTwo);
 
+$green: #82D173;
+$blue: #0077b6;
+$orange: #ffb703;
+$red: #d7263d;
 
 
 
@@ -82,13 +87,24 @@ $gradientLight: linear-gradient(to bottom right, $gradientLightClrOne, $gradient
     --purple: #{$gradientColorTwo};
     --gradient: #{$gradient};
     --gradientLight: #{$gradientLight};
+    --green: #{$green};
+    --blue: #{$blue};
+    --orange: #{$orange};
+    --red: #{$red};
+
 }
 * {
     box-sizing: border-box;
 }
+svg {
+    stroke: var(--mainTextColor);
+    fill: var(--mainTextColor);
+    transition: all .1s;
+}
 
 html {
     font-size: $baseFontSize;
+   
     
     
 
@@ -112,14 +128,16 @@ body {
     height: 100%;
     background-color: var(--bgColor);
     color: var(--mainTextColor);
+ 
+
     &.dark {
         @include darkTheme;
-        transition: all .5s;
+        transition: all .1s;
     }
 
     &.light {
         @include lightTheme;
-        transition: all .5s;
+        transition: all .1s;
     }
 }
 
@@ -127,6 +145,8 @@ body {
 
     &-content {
         min-height: 100vh;
+        display: flex;
+        justify-content: center;
     }
 
     position: relative;
@@ -134,9 +154,8 @@ body {
     min-width: 0px;
     min-height: 100%;
     overflow: hidden;
-    transition: color .2s,
-    background-color .5s;
 }
+
 
 /* You can add global styles to this file, and also import other style files */
 
@@ -185,8 +204,27 @@ h6 {
     padding: 0;
 }
 
+ul
+{
+list-style: none;
+padding: 0;
+margin: 0;
+}
 main {
     display: flex;
+}
+
+.flegmatic {
+    color: var(--green);
+}
+.melancholic {
+    color: var(--blue);
+}
+.sangvinnik {
+    color: var(--orange);
+}
+.holerik {
+    color: var(--red);
 }
 
 .container {
@@ -231,7 +269,7 @@ main {
     overflow: hidden;
     font-size: 14px;
     font-weight: bold;
-    transition: background-color .5s !important;
+    transition: background-color .1s !important;
     @media screen and (max-width: 768px) {
         font-size: 12px;
     }
@@ -274,7 +312,6 @@ main {
         border: 1px solid var(--mainTextColor) !important;
         background-color: var(--bgColor) !important;
         color: var(--mainTextColor) !important;
-        transition: all .5s;
     }
 }
 
@@ -295,6 +332,7 @@ main {
         &-close {
             align-self: flex-end;
             margin: 5px;
+            background-color: var(--red) !important;
         }
     }
     &-header {
@@ -350,6 +388,7 @@ main {
         color: gray;
     }
 }
+
 html,
 body {
     height: 100%;

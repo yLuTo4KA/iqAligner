@@ -10,13 +10,14 @@ import { Answer } from '../../models/Answers.interface';
 })
 export class UserService {
   private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
-  private answersSubject: BehaviorSubject<Answer | null> = new BehaviorSubject<Answer | null>(null);
+  private answersSubject: BehaviorSubject<Answer[] | null> = new BehaviorSubject<Answer[] | null>(null);
   private loadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   loading$ = this.loadingSubject.asObservable();
   answers$ = this.answersSubject.asObservable();
 
-  private apiUrl: string = "http://localhost:2888/api/profile";
+  // private apiUrl: string = "http://localhost:2888/api/profile";
+  private apiUrl: string = "http://51.21.85.46:8000/api/profile";
 
   constructor(private http: HttpClient) { }
 
@@ -33,9 +34,9 @@ export class UserService {
     });
   }
   
-  getAllAnswer(): Observable<any> {
+  getAllAnswer(): Observable<Answer[]> {
     this.loadingSubject.next(true);
-    return this.http.get<Answer>(this.apiUrl + '/getAnswers', {}).pipe(
+    return this.http.get<Answer[]>(this.apiUrl + '/getAnswers', {}).pipe(
       tap(response => {
         if(response) {
           this.answersSubject.next(response);

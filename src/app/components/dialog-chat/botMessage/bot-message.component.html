@@ -4,11 +4,9 @@
     </div>
     <div class="message-text bot-message-text">
         <p class="text-gradient">bot</p>
-        @if(!answer) {
-        <p>{{printedText}}</p>
-        }@else {
+        @if(answer) {
         <p>Скорее всего ваш тип:</p>
-        <p class="text-gradient bot-message-type">{{answer.type}}</p>
+        <p class="bot-message-type" [class]="colorType">{{answer.type}}</p>
         <p style="margin-bottom: 10px;">Подходящие вам профессии: </p>
         <div class="bot-message-desc">
             @for(profession of answer.profession; track profession) {
@@ -17,6 +15,9 @@
             </div>
             }
         </div>
+        <p>{{printedText}}</p>
+        }@else {
+        <p>{{printedText}}</p>
         }
         <div class="message-date">
             {{date | date:'shortTime'}}

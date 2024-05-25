@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatFabButton } from '@angular/material/button';
 
 import { DialogsService } from '../../../services/dialogs/dialogs.service';
@@ -10,11 +10,12 @@ import { DialogsService } from '../../../services/dialogs/dialogs.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent{
 
   constructor(private dialogsService: DialogsService) { }
 
   handleOpenChat(): void {
     this.dialogsService.openChatDialog();
   }
+
 }

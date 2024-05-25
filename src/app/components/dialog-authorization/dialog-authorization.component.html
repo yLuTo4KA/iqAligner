@@ -2,9 +2,7 @@
     <mat-icon>close</mat-icon>
 </button>
 <mat-dialog-content class="dialog-content">
-    @if(isLoading) {
-    <mat-spinner></mat-spinner>
-    }
+    
 
     <header class="dialog-header">
         <h1 class="dialog-title text-gradient">{{registration ? "Регистрация" : "Вход"}}</h1>
@@ -134,6 +132,9 @@
         {{error}}
     </p>
     }
+    @if(isLoading) {
+        <mat-spinner style="margin: 0 auto; margin-bottom: 20px;"></mat-spinner>
+        }
     @if(!registration) {
     <button mat-raised-button class="dialog-button" [disabled]="false"
         (click)="handleOnLogin(loginForm.value)">Войти</button>

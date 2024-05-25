@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { FormGroup, Validators } from '@angular/forms';
@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { User } from "../../models/User.interface";
 
 import { AuthorizationService } from '../../services/authorization/authorization.service';
+import { Subscription } from 'rxjs';
 
 interface login {
   username: string,
@@ -29,16 +30,18 @@ interface login {
 })
 
 
-export class DialogAuthorizationComponent implements OnInit {
-  loginForm: FormGroup;
-  regForm: FormGroup;
+export class DialogAuthorizationComponent implements OnInit, OnDestroy {
+  private subscriptions = new Subscription();
 
-  isLoading: boolean = false;
-  error: string | null = null;
+  public loginForm: FormGroup;
+  public regForm: FormGroup;
 
-  loginFormSubmit: boolean = false;
+  public isLoading: boolean = false;
+  public error: string | null = null;
 
-  regFormSubmit: boolean = false;
+  public loginFormSubmit: boolean = false;
+
+  public regFormSubmit: boolean = false;
 
 
   constructor(private authService: AuthorizationService, private matDialog: MatDialog) {
@@ -57,19 +60,23 @@ export class DialogAuthorizationComponent implements OnInit {
     })
   }
 
-  passwordVisibility: boolean = false;
-  registration: boolean = false;
+  public passwordVisibility: boolean = false;
+  public registration: boolean = false;
 
   ngOnInit(): void {
-    this.authService.loading$.subscribe(isLoading => {
-      this.isLoading = isLoading;
-    });
-    this.authService.error$.subscribe(error => {
-      this.error = error;
-    })
+    this.subscriptions.add(
+      this.authService.loading$.subscribe(isLoading => {
+        this.isLoading = isLoading;
+      })
+    );
+    this.subscriptions.add(
+      this.authService.error$.subscribe(error => {
+        this.error = error;
+      })
+    );
   }
 
-  handleChangeForm(): void{
+  handleChangeForm(): void {
     this.error = null;
     this.registration = !this.registration;
   }
@@ -78,21 +85,29 @@ export class DialogAuthorizationComponent implements OnInit {
     this.loginFormSubmit = true;
     const loginFormValid = this.loginForm.valid;
     if (loginFormValid) {
-      this.authService.login(loginData.username, loginData.password).subscribe((response) => {
-        this.closeModal();
-      });
+      this.subscriptions.add(
+        this.authService.login(loginData.username, loginData.password).subscribe((response) => {
+          this.closeModal();
+        })
+      );
     }
   };
   handleOnReg(userData: User): void {
     this.regFormSubmit = true;
     const regFormValid = this.regForm.valid;
     if (regFormValid) {
-      this.authService.registration(userData).subscribe((response) => {
-        this.closeModal();
-      })
+      this.subscriptions.add(
+        this.authService.registration(userData).subscribe((response) => {
+          this.closeModal();
+        })
+      )
     }
   };
   closeModal(): void {
     this.matDialog.closeAll();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }

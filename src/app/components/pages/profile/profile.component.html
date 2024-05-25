@@ -40,8 +40,33 @@
             </div>
         </div>
         <div class="profile__devider"></div>
-        
     </div>
-    <app-bot-message [answer]="fakeAnswer"></app-bot-message>
+    <div class="profile__content">
+        <h2 class="profile__content-title">
+            Ваша история запросов
+        </h2>
+        @if(loading) {
+            <div class="profile__loading loading">
+                <mat-spinner></mat-spinner>
+            </div>
+        }@else {
+            <div class="profile__result-history">
+                @if(!answers) {
+                    <h1>Ошибка при загрузке</h1>
+                }@else {
+                    @if(answers.length > 0) {
+                        <div class="profile__result-list">
+                            @for(answer of answers; track answer) {
+                                <app-result-card [aiAnswer]="answer.aiAnswer" class="profile__result-item"></app-result-card>
+                            }
+                        </div>
+                    }@else {
+                        <h3 class="profile__result-null">У вас нет запросов, узнайте свой тип личности прямо сейчас!</h3>
+                    }
+                }
+            </div>
+        }
+
+    </div>
 </div>
 }

@@ -1,50 +1,52 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { AuthorizationService } from '../../../services/authorization/authorization.service';
 import { UserService } from '../../../services/user/user.service';
 import { User } from '../../../models/User.interface';
 import { Answer } from '../../../models/Answers.interface';
 import { MatFabButton } from '@angular/material/button';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
-import { BotMessageComponent } from '../../dialog-chat/botMessage/bot-message.component';
-
+import { ResultCardComponent } from '../../result-card/result-card.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [MatFabButton, BotMessageComponent],
+  imports: [MatFabButton, ResultCardComponent, MatProgressSpinner],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
-export class ProfileComponent implements OnInit {
-  fakeAnswer = {
-      analys: 'Вы такой то такой то там человек бла бла ваш тип бла бла',
-      description: 'Флегматик бла бла бла',
-      profession: ['Программист', 'Псхиололга', 'Терапевт','Программист', 'Псхиололга', 'Терапевт','Программист', 'Псхиололга', 'Терапевт','Программист', 'Псхиололга', 'Терапевт'],
-      type: 'Флегматик',
-  }
+export class ProfileComponent implements OnInit, OnDestroy {
+  private subscriptions = new Subscription();
   token: string | null = null;
   userData: User | null = null;
   change: boolean = true;
-  answers: Answer | null = null;
+  answers: Answer[] | null = null;
   loading: boolean = false;
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.userService.getUserObservable().subscribe({
+    this.subscriptions.add(this.userService.getUserObservable().subscribe({
       next: userData => this.userData = userData,
       error: error => console.log(error),
-    });
-    this.userService.answers$.subscribe(answers => {
-      this.answers = answers,
-        console.log(answers);
-    });
-    this.userService.loading$.subscribe(loading => this.loading = loading);
-    this.userService.getAllAnswer().subscribe();
+    }));
+    this.subscriptions.add(
+      this.userService.answers$.subscribe(answers => this.answers = answers)
+    );
+    this.subscriptions.add(
+      this.userService.loading$.subscribe(loading => this.loading = loading)
+    );
+    this.subscriptions.add(
+      this.userService.getAllAnswer().subscribe()
+    );
 
     if (!this.userData) {
       this.userService.getUser();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
 }
