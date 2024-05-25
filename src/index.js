@@ -22,14 +22,15 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:4200"); // Указываем домен клиентского приложения
+    res.setHeader("Access-Control-Allow-Origin", "http://172.20.10.4:4200"); // Указываем домен клиентского приложения
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
     next();
 });
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-const port = 2888;
+const port = 2080;
+const host = '0.0.0.0';
 
 // CHECKER
 const verifyToken = (req, res, next) => {
@@ -288,7 +289,8 @@ app.put("/api/profile/update", verifyToken, async (req, res) => {
 
 const START = 0;
 // START SERVER
-app.listen(port, () => {
+app.listen(port, host, () => {
     console.log(`Server is running 🚀🚀🚀, port: ${port}`);
     console.log(`http://localhost:2888/`);
+    console.log(`http://${host}:${port}/`);
 });

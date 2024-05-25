@@ -1,11 +1,19 @@
 const mongoose = require("mongoose");
-const connect = mongoose.connect("mongodb://localhost:27017/IQAligner");
+const database = module.exports = () => {
+    const connectionParams = {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }
+    try {
+        mongoose.connect(`mongodb+srv://2ytka2:${process.env.DB_PASS}@cluster0.xj7m478.mongodb.net/iqAligner?retryWrites=true&w=majority&appName=Cluster0`);
+        console.log('connect success! 🧠🧠🧠')
+    } catch (error) {
+        console.log(error);
+    }
 
-connect.then(() => {
-    console.log("DB connected! 🧠");
-}).catch((e) => {
-    console.log("⛔️⛔️⛔️DB NOT WORKING!⛔️⛔️⛔️", e);
-});
+}
+
+database();
 
 // schemas 
 
