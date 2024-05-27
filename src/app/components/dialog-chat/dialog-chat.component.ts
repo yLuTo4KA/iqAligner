@@ -101,6 +101,7 @@ export class DialogChatComponent implements AfterViewInit, OnInit, OnDestroy {
           this.chatService.getResult(this.answersList, this.questions.questions, this.chatId).subscribe(response => {
             if (response) {
                 this.createBotMessage('', response);
+                this.subscriptions.add(this.userService.getAllAnswer().subscribe());
             }
             this.resultLoading = false;
           })

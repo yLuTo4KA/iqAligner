@@ -1,0 +1,60 @@
+<header class="dialog-header --space-between">
+    <h2 class="text-gradient">Изменение данных</h2>
+    <button mat-mini-fab class="btn btn--close dialog-btn-close" (click)="closeModal()">
+        <mat-icon>close</mat-icon>
+    </button>
+</header>
+<mat-dialog-content class="dialog-content">
+    @if(userData) {
+        <form [formGroup]="updateUser">
+            <p>
+                <mat-form-field>
+                    <mat-label>Почта</mat-label>
+                    <input matInput placeholder="Почта" type="text" formControlName="mail" [(ngModel)]="userData.mail">
+                    <mat-icon matSuffix>person</mat-icon>
+                    @if(updateUser.controls['mail'].invalid && (updateUser.controls['mail'].touched ||
+                    updateUserSubmit)){
+                    @if(updateUser.controls['mail'].errors?.['required']){
+                    <mat-error>Заполните поле!</mat-error>
+                    }
+                    @if(updateUser.controls['mail'].errors?.['email']){
+                    <mat-error>Некорректная почта</mat-error>
+                    }
+                    }
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field>
+                    <mat-label>Имя</mat-label>
+                    <input matInput placeholder="Имя" type="text" formControlName="firstName" [(ngModel)]="userData.firstName">
+                    <mat-icon matSuffix>person</mat-icon>
+                    @if(updateUser.controls['firstName'].invalid && (updateUser.controls['firstName'].touched ||
+                    updateUserSubmit)){
+                    @if(updateUser.controls['firstName'].errors?.['required']){
+                    <mat-error>Заполните поле!</mat-error>
+                    }
+                    @if(updateUser.controls['firstName'].errors?.['minlength']){
+                    <mat-error>Минимум 3 символа!</mat-error>
+                    }
+                    }
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field>
+                    <mat-label>Фамилия</mat-label>
+                    <input matInput placeholder="Фамилия" type="text" formControlName="lastName" [(ngModel)]="userData.lastName">
+                    <mat-icon matSuffix>person</mat-icon>
+                    @if(updateUser.controls['lastName'].invalid && (updateUser.controls['firstName'].touched ||
+                    updateUserSubmit)){
+                    @if(updateUser.controls['firstName'].errors?.['maxlength']){
+                    <mat-error>Максимум 55 символов!</mat-error>
+                    }
+                    }
+                </mat-form-field>
+            </p>
+        </form>
+    }
+</mat-dialog-content>
+<mat-dialog-actions class="dialog-actions">
+    <button mat-raised-button class="dialog-button" (click)="handleUpdateProfile(updateUser.value)">Обновить данные</button>
+</mat-dialog-actions>

@@ -1,4 +1,4 @@
-@if(aiAnswer) {
+@if(aiAnswer && answerId) {
     <div class="result-card">
         <h1 class="result-card__type" [class]="colorType">
             {{aiAnswer.type}}
@@ -17,7 +17,7 @@
         </div>
         <button (click)="changeShow()" class="btn result-card__btn-showAll" >Показать {{showAll ? 'меньше' : 'больше'}}...</button>
         <div class="result-card__actions">
-            <button mat-fab class="btn btn--mini result-card__btn-delete"><mat-icon>delete</mat-icon></button>
+            <button mat-fab class="btn btn--mini result-card__btn-delete" (click)="handleRemoveAnswer(answerId)"><mat-icon>delete</mat-icon></button>
             <button mat-fab extended class="btn --box btn--gradient">Подробнее</button>
         </div>
     </div>

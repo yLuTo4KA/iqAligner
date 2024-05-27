@@ -5,6 +5,8 @@ import { AuthorizationService } from '../authorization/authorization.service';
 
 import { DialogAuthorizationComponent } from '../../components/dialog-authorization/dialog-authorization.component';
 import { DialogChatComponent } from '../../components/dialog-chat/dialog-chat.component';
+import { DialogChangeAvatarComponent } from '../../components/dialog-change-avatar/dialog-change-avatar.component';
+import { DialogChangeUserInfoComponent } from '../../components/dialog-change-user-info/dialog-change-user-info.component';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +30,22 @@ export class DialogsService {
     } else {
       this.openAuthDialog();
     }
-    // this.matDialog.open(DialogChatComponent, {width: '600px'});
+  }
+  
+  openAvatarChangeDialog(): void {
+    if(this.token !== null) {
+      this.matDialog.open(DialogChangeAvatarComponent, {width: '600px'});
+    }else {
+      this.openAuthDialog();
+    }
+  }
+
+  openUserInfoChangeDialog(): void {
+    if(this.token !== null) {
+      this.matDialog.open(DialogChangeUserInfoComponent, {width: '600px'});
+    }else {
+      this.openAuthDialog();
+    }
   }
   
   closeDialog(): void {

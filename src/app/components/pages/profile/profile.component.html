@@ -30,13 +30,14 @@
         <div class="profile__header-content">
             <div class="profile__avatar">
                 <img [src]="userData.avatar" alt="avatar" class="profile__avatar-img img">
+                <button (click)="handleOpenChangeAvatar()" class="btn text-gradient profile__avatar-btn">Изменить аватар</button>
             </div>
             <div class="profile__user-data">
                 <div class="profile__user-info">
                     <h2 class="profile__username">{{userData.username}}</h2>
                     <p class="profile__fullname">{{userData.firstName + " " + userData.lastName}}</p>
                 </div>
-                <button mat-fab extended class="btn --box btn--gradient">Изменить профиль</button>
+                <button mat-fab extended class="btn --box btn--gradient" (click)="handleOpenChangeUserInfo()">Изменить профиль</button>
             </div>
         </div>
         <div class="profile__devider"></div>
@@ -57,7 +58,7 @@
                     @if(answers.length > 0) {
                         <div class="profile__result-list">
                             @for(answer of answers; track answer) {
-                                <app-result-card [aiAnswer]="answer.aiAnswer" class="profile__result-item"></app-result-card>
+                                <app-result-card [answerId]="answer._id" [aiAnswer]="answer.aiAnswer" class="profile__result-item"></app-result-card>
                             }
                         </div>
                     }@else {

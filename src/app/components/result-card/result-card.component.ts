@@ -3,6 +3,7 @@ import { Result } from '../../models/Result.interface';
 
 import { MatFabButton } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-result-card',
@@ -12,7 +13,10 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './result-card.component.scss'
 })
 export class ResultCardComponent implements OnInit {
+  @Input ({required: true}) answerId!: string;
   @Input({required: true}) aiAnswer!: Result;
+
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
     this.detectTypeColor(this.aiAnswer.type);
@@ -46,5 +50,15 @@ export class ResultCardComponent implements OnInit {
       default: 
         this.colorType = 'flegmatic';
     }
+  }
+
+  handleRemoveAnswer(answerId: string): void {
+    this.userService.removeAnswer(answerId).subscribe({
+      next: data => {
+      },
+      error: error => {
+        console.error(error);
+      }
+    });
   }
 }

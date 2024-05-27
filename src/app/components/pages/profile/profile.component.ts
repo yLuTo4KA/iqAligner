@@ -8,6 +8,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 import { ResultCardComponent } from '../../result-card/result-card.component';
 import { Subscription } from 'rxjs';
+import { DialogsService } from '../../../services/dialogs/dialogs.service';
 
 @Component({
   selector: 'app-profile',
@@ -23,7 +24,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   change: boolean = true;
   answers: Answer[] | null = null;
   loading: boolean = false;
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private dialogService: DialogsService) { }
 
   ngOnInit(): void {
     this.subscriptions.add(this.userService.getUserObservable().subscribe({
@@ -44,6 +45,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.userService.getUser();
     }
   }
+
+  handleOpenChangeAvatar(): void {
+    this.dialogService.openAvatarChangeDialog();
+  }
+  handleOpenChangeUserInfo(): void {
+    this.dialogService.openUserInfoChangeDialog();
+  }
+
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();

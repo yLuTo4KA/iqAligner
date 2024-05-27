@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, finalize, Observable, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, finalize, Observable, switchMap, tap, throwError } from 'rxjs';
 import { User } from "../../models/User.interface";
 import { Answer } from '../../models/Answers.interface';
 
@@ -16,9 +16,10 @@ export class UserService {
   loading$ = this.loadingSubject.asObservable();
   answers$ = this.answersSubject.asObservable();
 
-  // private apiUrl: string = "http://localhost:2888/api/profile";
-  private apiUrl: string = "http://51.21.85.46:8000/api/profile";
-
+  // private apiUrl: string = "http://51.21.85.46:8000/api/profile";
+  // private apiUrl: string = "http://172.20.10.4:8000/api/profile";
+  private apiUrl: string = "http://192.168.0.104:8000/api/profile";
+  
   constructor(private http: HttpClient) { }
 
   getUser(): void {
@@ -50,6 +51,57 @@ export class UserService {
           console.error("Ошибка загрузки данных")
         }
         return throwError(() => "Ошибка авторизации");
+      })
+    )
+  }
+
+  removeAnswer(answerId: string): Observable<any> {
+    const options = {
+      body: { answerId: answerId }
+    };
+    return this.http.delete<any>(this.apiUrl + "/removeAnswer", options).pipe(
+      switchMap(() => this.getAllAnswer()),
+      tap(response => {
+        this.answersSubject.next(response);
+      }),
+      finalize(() => {
+        this.loadingSubject.next(false);
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.log(error);
+        return throwError(() => "Ошибка удаления ответа")
+      })
+    )
+  }
+
+  updateAvatar(data: any): Observable<any> {
+    this.loadingSubject.next(true);
+    return this.http.post<any>(this.apiUrl + '/update-avatar', data).pipe(
+      tap(response => {
+        this.getUser();
+      }),
+      finalize(() => {
+        this.loadingSubject.next(false);
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.log(error);
+        return throwError(() => "Ошибка обновления автара")
+      })
+    )
+  }
+
+  updateUser(data: any): Observable<any> {
+    this.loadingSubject.next(true);
+    return this.http.put<any>(this.apiUrl + '/update', data).pipe(
+      tap(response => {
+        this.getUser();
+      }),
+      finalize(() => {
+        this.loadingSubject.next(false);
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.log(error);
+        return throwError(() => "Ошибка обновления данных");
       })
     )
   }

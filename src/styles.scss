@@ -250,6 +250,9 @@ main {
         -webkit-text-fill-color: transparent;
         -webkit-background-clip: text;
     }
+    &-error {
+        color: var(--red);
+    }
 }
 
 .title {
@@ -338,6 +341,11 @@ main {
     &-header {
         display: flex;
         justify-content: center;
+        align-items: center;
+        &.--space-between {
+            justify-content: space-between;
+            padding: 10px;
+        }
     }
     &-title {
         line-height: 1.4;

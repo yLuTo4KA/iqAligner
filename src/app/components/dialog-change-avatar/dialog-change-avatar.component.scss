@@ -1,0 +1,19 @@
+.dialog-change-avatar {
+    display: flex;
+    flex-direction: column;
+}
+
+.change-avatar {
+    &__area {
+        width: 100%;
+        min-height: 350px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: var(--gradientLight);
+        color: var(--mainTextColor);
+        margin-bottom: 25px;
+        border-radius: 20px;
+    }
+}

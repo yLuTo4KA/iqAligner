@@ -1,0 +1,22 @@
+<header class="dialog-header --space-between">
+    <h2 class="text-gradient">Загрузка аватара</h2>
+    <button mat-mini-fab class="btn btn--close dialog-btn-close" (click)="closeModal()">
+        <mat-icon>close</mat-icon>
+    </button>
+</header>
+<mat-dialog-content class="dialog-content dialog-change-avatar">
+    <label for="avatarInput" class="change-avatar__area">
+        <mat-icon style="transform: scale(2.5); margin-bottom: 25px;">upload</mat-icon>
+        <p style="text-align: center;">Выбирите файл или ператащите его сюда</p>
+        @if(selectedFile) {
+            <p class="text-gradient">Выбран файл: {{selectedFile.name}}</p>
+        }
+        
+        
+    </label>
+    <input id="avatarInput" type="file" (change)="onFileChange($event)" style="display: none;">
+    <button  mat-fab extended class="btn btn--gradient" (click)="onSubmit()" [disabled]="selectedFile === null">Загрузить аватар</button>
+    @if(statusMessage) {
+        <p class="text-error">{{statusMessage}}</p>
+    }
+</mat-dialog-content>

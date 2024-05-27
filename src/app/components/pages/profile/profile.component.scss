@@ -16,6 +16,7 @@
             @media screen and (max-width: 480px) {
                 flex-direction: column;
                 margin-bottom: 20px;
+                justify-content: center;
             }
         }
     }
@@ -30,7 +31,7 @@
         position: relative;
         @media screen and (max-width: 480px) {
             margin-right: 0;
-            margin-bottom: 25px;
+            margin-bottom: 40px;
         }
         &::before {
             content: "";    
@@ -46,6 +47,11 @@
         }
         &-img {
             border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        &-btn {
+            width: 100%;
+            justify-content: center;
         }
     }
 
@@ -72,6 +78,7 @@
         bottom: 0;
     }
     &__content {
+        margin-bottom: 35px;
         &-title {
             margin-bottom: 33px;
         }
