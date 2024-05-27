@@ -16,20 +16,57 @@ const openai = new OpenAI({
 
 
 
-
-
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://172.20.10.4:4200"); // Указываем домен клиентского приложения
+    res.setHeader("Access-Control-Allow-Origin", "http://192.168.0.104:4200"); // Указываем домен клиентского приложения
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
     next();
 });
+
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-const port = 2080;
+function deleteFile(filePath) {
+    fs.unlink(filePath, (err) => {
+        if (err) {
+            console.error('Ошибка при удалении файла:', err);
+        } else {
+            console.log('Файл успешно удален');
+        }
+    });
+}
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        const dir = path.join(__dirname, 'uploads');
+        console.log(req.avatar);
+        cb(null, dir);
+     },
+     filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname);
+     }
+});
+function fileFilter(req, file, cb) {
+    if (file.mimetype.startsWith('image/')) {
+        cb(null, true);
+    } else {
+        cb(new Error('Допустимы только изображения'));
+    }
+}
+const fileSizeLimit = 10 * 1024 * 1024;
+
+const upload = multer({ 
+    storage: storage,
+    fileFilter: fileFilter,
+    limits: { fileSize: fileSizeLimit }
+});
+
+
+const port = 8000;
 const host = '0.0.0.0';
 
 // CHECKER
@@ -200,24 +237,74 @@ app.post("/api/chat/getAnswer", verifyToken, async (req, res) => { // userAnswer
 // profile
 app.put("/api/profile/update", verifyToken, async (req, res) => {
     try {
-        console.log(req.user);
-        const authUser = req.user.userId;
+        const { mail, firstName, lastName } = req.body;
 
-        const updateUserData = await UserModel.findOneAndUpdate(
-            { _id: authUser },
-            { $set: req.body },
-            { new: true }
-        )
+        const {userId} = req.user;
 
-        if (!updateUserData) {
-            return res.status(404).send("Not updated!");
+        const user = await UserModel.findById(userId);
+
+        if(!user) {
+            return res.status(404).send("Пользователь не найден");
         }
 
-        res.status(200).send("Updated!");
+        if (mail !== undefined) user.mail = mail;
+        if (firstName !== undefined) user.firstName = firstName;
+        if (lastName !== undefined) user.lastName = lastName;
+
+        await user.save();
+        res.status(200).send({message: "Updated!"});
     } catch (e) {
         res.status(500).send("error");
     }
 });
+
+app.post("/api/profile/update-avatar", verifyToken, upload.single('avatar'), async(req, res) => {
+    try{
+        const { userId } = req.user;
+        const avatarPath = `/uploads/${req.file.filename}`;
+
+        const user = await UserModel.findById(userId);
+
+        if(!user) {
+            return res.status(404).send("Пользователь не найден");
+        }
+        if (user.avatar) {
+            const previousAvatarPath = path.join(__dirname, user.avatar);
+            deleteFile(previousAvatarPath);
+        }
+        user.avatar = avatarPath;
+        await user.save();
+        
+        res.status(200).send({message: 'Аватар успешно обновлен'});
+    }catch(e) {
+        res.status(500).send('Ошибка при загрузке аватара');
+    }
+});
+
+
+// delete
+
+app.delete("/api/profile/removeAnswer", verifyToken, async (req, res) => {
+    try {
+        const {userId} = req.user;
+        const answerId = req.body.answerId;
+
+        const deletedAnswer = await AnswerModel.findById(answerId);
+        if(!userId || !deletedAnswer) {
+            res.status(404).send({message: "Пользователь или Ответ не найден"});
+        }
+        if(deletedAnswer.user.toString() !== userId) {
+            res.status(410).send({message: "К сожалению у вас нет доступа"});
+        }
+        await AnswerModel.deleteOne(deletedAnswer);
+
+        res.status(200).send({message: "Удалено!"}); 
+    }catch (e) {
+        console.error(e);
+        res.status(500).send({message: "Ошибка при удалении ответа"});
+    }
+})
+
 
 
 

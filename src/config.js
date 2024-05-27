@@ -39,11 +39,13 @@ const UserSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true,
+        trim: true,
     },
     lastName: {
         type: String,
         required: false,
         default: null,
+        trim: true,
     },
     avatar: {
         type: String,
