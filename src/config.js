@@ -52,12 +52,12 @@ const UserSchema = new mongoose.Schema({
         required: false,
         default: "/uploads/default.png",
     }
-})
+});
 
 const AnswerSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
+        ref: "Users",
         required: true,
     },
     date: {
@@ -78,8 +78,31 @@ const AnswerSchema = new mongoose.Schema({
         required: false,
         default: null,
     }
-})
+});
+const ReviewSchema = new mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
+        required: true
+    },
+    rating: {
+        type: Number,
+        required: true,
+        min: 1,
+        max: 5
+    },
+    comment: {
+        type: String,
+        required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
+});
 
 const UserModel = new mongoose.model("Users", UserSchema);
 const AnswerModel = new mongoose.model("Answers", AnswerSchema);
-module.exports = {UserModel, AnswerModel};
+const ReviewModel = new mongoose.model("Reviews", ReviewSchema);
+
+module.exports = {UserModel, AnswerModel, ReviewModel};

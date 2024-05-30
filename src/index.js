@@ -5,7 +5,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const bcrypt = require("bcrypt");
-const { UserModel, AnswerModel } = require("./config");
+const { UserModel, AnswerModel, ReviewModel } = require("./config");
 const jwt = require("jsonwebtoken");
 const OpenAI = require("openai");
 
@@ -20,7 +20,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://192.168.0.104:4200"); // Указываем домен клиентского приложения
+    res.setHeader("Access-Control-Allow-Origin", "http://172.20.10.4:4200, http://52.21.85.46:4200"); // Указываем домен клиентского приложения
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
     res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -119,6 +119,54 @@ app.get("/api/profile/getAnswers", verifyToken, async (req, res) => {
         res.status(404).send(`Error: ${e}`);
     }
 });
+
+// default 
+
+app.get("/api/reviews/getReviews", async (req, res) => {
+    try {
+        const reviews = await ReviewModel.aggregate([
+            {
+                $match: {
+                    $expr: {
+                        $and: [
+                            { $gte: [{ $strLenCP: "$comment" }, 50] },
+                            { $lte: [{ $strLenCP: "$comment" }, 500] }
+                        ]
+                    }
+                }
+            },
+            { $sample: { size: 20 } }
+        ]);
+        
+        const populatedReviews = await ReviewModel.populate(reviews, { path: 'user', select: 'username avatar' });
+
+        const hostUrl = `${req.protocol}://${req.get('host')}`;
+
+        const transformedReviews = populatedReviews.map(review => {
+            if (review.user && review.user.avatar && !review.user.avatar.startsWith('http')) {
+                review.user.avatar = `${hostUrl}${review.user.avatar}`;
+            }
+            return review;
+        });
+
+        res.status(200).send(transformedReviews);
+    } catch (e) {
+        console.error(e);
+        res.status(500).send({ message: "Ошибка при загрузке отзывов" });
+    }
+});
+app.get("/api/reviews/getCount", async(req, res) => {
+    try {
+        const count = await AnswerModel.countDocuments();
+        res.json({ count });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Произошла ошибка при получении количества комментариев' });
+    }
+})
+
+
+
 
 
 // POST
@@ -231,6 +279,44 @@ app.post("/api/chat/getAnswer", verifyToken, async (req, res) => { // userAnswer
     }
 });
 
+app.post("/api/reviews/generateReview", verifyToken, async (req, res) => {
+    try{
+        const {grade} = req.body ?? 5;
+
+        const completion = await openai.chat.completions.create({
+            messages: [{ role: "system", content: `Составлять отзыв от лица пользователя для сайта определяющего тип личности по оценке пользовател. Оценка пользователя = ${grade} из 5 (оценку в отзыве не упоминай, но пиши в зависимости от оценки). от 20 до 500 символов ответ должен быть в виде json = {review: string (max-length = 500)}` }, { role: "user", content: `Составь отзыв для сайта опредяющего тип личности и профессию с помощью ИИ по оценке пользователя в ${grade} баллов из 5.` }],
+            model: "gpt-3.5-turbo",
+        });
+
+        const response = JSON.parse(completion.choices[0].message.content);
+        console.log(response);
+        
+        res.status(200).send(response);
+    }catch(e) {
+        res.status(404).send(e || "ошибка при составлении отзыва");
+    }
+});
+
+// Reviews 
+
+app.post("/api/reviews/createReview", verifyToken, async(req, res) => {
+    try {
+        const {userId} = req.user;
+        const {rating, comment} = req.body;
+        const newReview = new ReviewModel({
+            user: userId,
+            rating,
+            comment
+        });
+
+        await newReview.save();
+
+        res.status(200).send({message: "Отзыв успешно опубликован!"});
+    }catch(e) {
+        console.error(e);
+        res.status(500).send({message: "ошибка при добавлении комментария!"});
+    }
+});
 
 // PUT
 
@@ -378,6 +464,5 @@ const START = 0;
 // START SERVER
 app.listen(port, host, () => {
     console.log(`Server is running 🚀🚀🚀, port: ${port}`);
-    console.log(`http://localhost:2888/`);
     console.log(`http://${host}:${port}/`);
 });
