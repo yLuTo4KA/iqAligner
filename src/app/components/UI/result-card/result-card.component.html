@@ -1,0 +1,30 @@
+@if(aiAnswer && answerId) {
+<div class="result-card">
+    <h1 class="result-card__type" [class]="colorType">
+        {{aiAnswer.type}}
+    </h1>
+    <h3 class="result-card__block-title">Профессии:</h3>
+    <div class="result-card__profession-list">
+
+        @if(aiAnswer.profession) {
+
+        @for(profession of displayedProfession; track profession) {
+        <div class="result-card__profession-item">
+            {{profession}}
+        </div>
+        }
+        }
+    </div>
+    <button (click)="changeShow()" class="btn result-card__btn-showAll">Показать {{showAll ? 'меньше' :
+        'больше'}}...</button>
+    <div class="result-card__actions">
+        <button mat-fab class="btn btn--mini result-card__btn-delete"
+            (click)="handleRemoveAnswer(answerId)"><mat-icon>delete</mat-icon></button>
+        <div class="result-card__actions-btns">
+            <button mat-fab class="btn btn--mini result-card__btn-download"
+                (click)="onDownloadBtnClick()"><mat-icon>download</mat-icon></button>
+            <button mat-fab extended class="btn --box btn--gradient" (click)="handleCheckMore(aiAnswer)">Подробнее</button>
+        </div>
+    </div>
+</div>
+}

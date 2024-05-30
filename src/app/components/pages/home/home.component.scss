@@ -181,3 +181,40 @@
         }
     }
 }
+.reviews {
+    &__spinner{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    &__subtitle {
+        color: gray;
+        text-align: center;
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+    &__container {
+        transition-timing-function: linear !important;
+        &-item {
+            min-height: 300px;
+            height: auto;
+            width: 550px;
+            position: relative;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--mainTextColor);
+            transition: scale .5s, opacity .5s;
+            &:not(.swiper-slide-active) {
+                opacity: 50%;
+                scale: 0.7;
+                transition: scale .5s, opacity .5s;
+            }
+        }
+    }
+}
+
+.review__card {
+    flex: 1;
+}

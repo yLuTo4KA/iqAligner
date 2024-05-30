@@ -1,0 +1,29 @@
+<div class="message bot-message">
+    <div class="message-avatar">
+        <img src="assets/botAvatar.png" alt="bot" class="img">
+    </div>
+    <div class="message-text bot-message-text">
+        <p class="text-gradient">bot</p>
+        @if(answer) {
+        <p>Скорее всего ваш тип:</p>
+        <p class="bot-message-type" [class]="colorType">{{answer.type}}</p>
+        <p style="margin-bottom: 10px;">Подходящие вам профессии: </p>
+        <div class="bot-message-desc">
+            @for(profession of answer.profession; track profession) {
+            <div class="bot-message-profession">
+                <p class="bot-message-profession-text">{{profession}}</p>
+            </div>
+            }
+        </div>
+        <p class="bot-message-text">{{printedText}}</p>
+            @if(viewBtnReview) {
+                <button mat-fab extended class="btn btn--gradient bot-message-btn-review" (click)="openReviewDialog()">Оставить отзыв</button>
+            }
+        }@else {
+        <p>{{printedText}}</p>
+        }
+        <div class="message-date">
+            {{date | date:'shortTime'}}
+        </div>
+    </div>
+</div>

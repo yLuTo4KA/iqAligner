@@ -1,0 +1,34 @@
+<header class="dialog-header --space-between">
+    <h2 class="text-gradient">Добавление отзыва</h2>
+    <button mat-mini-fab class="btn btn--close dialog-btn-close" (click)="closeModal()">
+        <mat-icon>close</mat-icon>
+    </button>
+</header>
+<mat-dialog-content class="dialog-content">
+    <p class="text-gradient">Как вы оцениваете ответ нашего AI помошника?</p>
+    <div class="add-review__rating">
+        <mat-icon class="star-icon" (click)="setRating(1)" [class.active]="grade >= 1">star</mat-icon>
+        <mat-icon class="star-icon" (click)="setRating(2)" [class.active]="grade >= 2">star</mat-icon>
+        <mat-icon class="star-icon" (click)="setRating(3)" [class.active]="grade >= 3">star</mat-icon>
+        <mat-icon class="star-icon" (click)="setRating(4)" [class.active]="grade >= 4">star</mat-icon>
+        <mat-icon class="star-icon" (click)="setRating(5)" [class.active]="grade >= 5">star</mat-icon>
+    </div>
+    <mat-form-field class="add-review__text">
+        <mat-label>Напишите ваши впечатления</mat-label>
+        <textarea [(ngModel)]="reviewText" matInput rows="5" cols="40"
+            placeholder="Мне так понравился этот AI он помог мне определить мой тип личности и подобрал мне профессию!"
+            maxlength="500">
+        </textarea>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions class="dialog-actions add-review__actions">
+    <button (click)="handleSendReview()" mat-fab extended class="btn btn--gradient add-review__btn-send"
+        [disabled]="loading">
+        @if(loading){
+        <mat-spinner class="add-review__btn-loading"></mat-spinner>
+        }
+        @else{Отправить}
+    </button>
+    <button class="btn text-gradient" (click)="handleGenerateReview()">Не знаете что написать? Сгенерировать
+        отзыв</button>
+</mat-dialog-actions>

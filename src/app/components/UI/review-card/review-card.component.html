@@ -1,0 +1,27 @@
+@if(reviewData) {
+    <div class="review">
+        <div class="review__container">
+            <div class="review__user">
+                <div class="review__avatar">
+                    <img class="img review__avatar-img" [src]="reviewData.user.avatar" alt="userAvatar">
+                </div>
+                <h3 class="review__username">
+                    {{reviewData.user.username}}
+                </h3>
+            </div>
+            <div class="review__comment">
+                <div class="review__comment-rating">
+                    @for(rating of getNumberArray(reviewData.rating); track rating) {
+                        <mat-icon class="star">star</mat-icon>
+                    }
+                </div>
+                <div class="review__comment-text">
+                    {{reviewData.comment}}
+                </div>
+                <div class="review__comment-date">
+                    {{reviewData.createdAt | date:'shortDate'}}
+                </div>
+            </div>
+        </div>
+    </div>
+}

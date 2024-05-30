@@ -1,0 +1,40 @@
+.bot-message {
+    &-text {
+        margin-left: 5px;
+        border-top-left-radius: 0;
+    }
+    &-desc {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    &-type {
+        font-size: 18px;
+        font-weight: bold;
+        
+    }
+    &-text {
+        margin-bottom: 10px;
+    }
+    &-profession {
+        margin-right: 5px;
+        margin-bottom: 10px;
+        background: var(--mainTextColor);
+        padding: 5px 10px;
+        border-radius: 25px;
+        &-text {
+            font-weight: bold;
+            color: var(--oppositeMainTextColor);
+        }
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+
+    &-btn {
+        &-review {
+            width: 100%;
+        }
+    }
+    
+}
+

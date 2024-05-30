@@ -40,6 +40,9 @@ $IQaligner-theme: mat.define-light-theme((color: (primary: $IQaligner-primary,
 .mat-mdc-dialog-surface{
     background-color: var(--bgColor) !important;
 }
+.mat-mdc-dialog-container {
+    --mdc-dialog-container-shape: 24px;
+  }
 //
 
 // mat-form 
@@ -59,6 +62,7 @@ $IQaligner-theme: mat.define-light-theme((color: (primary: $IQaligner-primary,
 }
 
 // --mat-form
+
 
 
 $tablets: 768px;

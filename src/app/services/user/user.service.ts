@@ -16,9 +16,7 @@ export class UserService {
   loading$ = this.loadingSubject.asObservable();
   answers$ = this.answersSubject.asObservable();
 
-  // private apiUrl: string = "http://51.21.85.46:8000/api/profile";
-  // private apiUrl: string = "http://172.20.10.4:8000/api/profile";
-  private apiUrl: string = "http://192.168.0.104:8000/api/profile";
+  private apiUrl: string = "http://51.21.85.46:8000/api/profile";
   
   constructor(private http: HttpClient) { }
 

@@ -1,0 +1,43 @@
+.add-review {
+    &__rating {
+        margin-bottom: 10px;
+        .star-rating {
+            display: flex;
+            align-items: center;
+          }
+          
+          .star-icon {
+            font-size: 33px;
+            cursor: pointer;
+            color: #ccc;
+            height: max-content;
+            width: max-content;
+          }
+          
+          .star-icon.active {
+            color: var(--orange); /* Желтый цвет для выбранных звезд */
+          }
+    }
+    &__text {
+        max-height: 300px;
+        overflow: auto;
+    }
+    &__btn {
+        
+        &-send {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        &-loading {
+            width: 30px !important;
+            height: 30px !important;
+            color: black !important;
+            stroke: black !important;
+        }
+    }
+}
+
+.mat-accent {
+    --mdc-circular-progress-active-indicator-color: white !important;
+}
+

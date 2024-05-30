@@ -1,0 +1,40 @@
+<div class="diplome">
+    <header class="diplome__header">
+        <img src="assets/iqAligner.png" alt="logo">
+        <h1>Сертификат</h1>
+        
+    </header>
+    <div class="diplome__splitter"></div>
+    <div class="diplome__content">
+        <div class="diplome__content-user">
+            <p class="diplome__content-assertion">Настоящим удостоверяем, что</p>
+            <div class="diplome__content-fullname">
+                {{userData.firstName + ' ' + userData.lastName}}
+            </div>
+            <p>Прошел тестирование на определение типа личности</p>
+        </div>
+        <div class="diplome__content-info">
+            <h1 class="diplome__content-type" [class]="colorType">«{{diplomeData.aiAnswer.type}}»</h1>
+            <p class="diplome__content-type-description">
+                {{diplomeData.aiAnswer.description}}
+            </p>
+            <div class="diplome__content-type-professions-list">
+                @for(profession of diplomeData.aiAnswer.profession; track profession) {
+                    <div class="diplome__content-type-professions-item">
+                        {{profession}}
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <footer class="diplome__footer">
+        <div class="diplome__footer-name">Хатин Данил Иванович</div>
+        <div class="diplome__footer-stamp">
+            <img src="assets/stamp.png" alt="xD подпись">
+        </div>
+        <div class="diplome__footer-info">
+            <div class="diplome__footer-date">{{diplomeData.date | date}}</div>
+            <div class="diplome__footer-id">{{diplomeData._id}}</div>
+        </div>
+    </footer>
+</div>

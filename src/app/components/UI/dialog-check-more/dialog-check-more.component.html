@@ -1,0 +1,25 @@
+<header class="dialog-header --space-between">
+    <h2 class="text-gradient">Подробности</h2>
+    <button mat-mini-fab class="btn btn--close dialog-btn-close" (click)="closeModal()">
+        <mat-icon>close</mat-icon>
+    </button>
+</header>
+<mat-dialog-content class="dialog-content">
+    <h1 class="check-more__type" [class]="colorType">
+        {{data.type}}
+    </h1>
+    <h4 class="check-more__block-title text-gradient">Описание типа</h4>
+    <p class="check-more__type-description">
+        {{data.description}}
+    </p>
+    <h4 class="check-more__block-title text-gradient">Анализ ваших ответов</h4>
+    <p class="check-more__analys">{{data.analys}}</p>
+    <h4 class="check-more__block-title text-gradient">Профессии которые вам подходят</h4>
+    <div class="check-more__professions-list">
+        @for(profession of data.profession; track profession){
+            <div class="check-more__professions-item">
+                {{profession}}
+            </div>
+        }
+    </div>
+</mat-dialog-content>

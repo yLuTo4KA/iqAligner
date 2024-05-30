@@ -58,7 +58,7 @@
                     @if(answers.length > 0) {
                         <div class="profile__result-list">
                             @for(answer of answers; track answer) {
-                                <app-result-card [answerId]="answer._id" [aiAnswer]="answer.aiAnswer" class="profile__result-item"></app-result-card>
+                                <app-result-card [answerId]="answer._id" [aiAnswer]="answer.aiAnswer" class="profile__result-item" (downloadBtnClicked)="handleDownloadDiplome(answer, userData)"></app-result-card>
                             }
                         </div>
                     }@else {
@@ -71,3 +71,6 @@
     </div>
 </div>
 }
+<div style="display: none;" class="diplome__area" style="width: 210mm; height: 297mm; size: A4; position: absolute; z-index: -999;">
+    <ng-template #diplomeContainer style="width: 100%; height: 100%;"></ng-template>
+</div>

@@ -1,0 +1,89 @@
+.review {
+    height: 100%;
+    &__container {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px;
+        @media screen and (max-width: 768px) {
+            flex-direction: column;
+        }
+    }
+    &__user {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        @media screen and (max-width: 480px) {
+            &::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: 1px;
+                background: var(--gradient);
+                
+            }
+            margin-bottom: 20px;
+        }
+    }
+    &__username {
+        margin-bottom: 10px;
+    }
+    &__avatar {
+        width: 200px;
+        height: 200px;
+        position: relative;
+        margin-bottom: 10px;
+        margin-right: 15px;
+        @media screen and (max-width: 768px) {
+            width: 150px;
+            height: 150px;
+        }
+        @media screen and (max-width: 480px) {
+            width: 120px;
+            height: 120px;
+            margin-right: 0;
+        }
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: -2px;
+            background: var(--gradient);
+            z-index: -1;
+            border-radius: 50%;
+        }
+        &-img {
+            border-radius: 50%;
+        }
+    }
+    &__comment {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex: 1;
+        &-rating {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        &-text {
+            font-size: 14px;
+        }
+        &-date {
+            font-size: 10px;
+            color: gray;
+            text-align: right;
+        }
+    }
+    
+}
+
+.star {
+    color: gold;
+}

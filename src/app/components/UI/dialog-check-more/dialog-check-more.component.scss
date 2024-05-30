@@ -1,0 +1,44 @@
+.check-more{
+    &__block-title {
+        margin-bottom: 10px;
+    }
+    &__type {
+        text-align: center;
+        margin-bottom: 20px;
+        &-description {
+            color: var(--mainTextColor);
+            letter-spacing: 3px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    }
+    &__analys {
+        color: var(--mainTextColor);
+        text-align: center;
+        line-height: 1.5;
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+    &__professions {
+        &-list {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        &-item {
+            padding: 5px 10px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            background: var(--gradientLight);
+            border-radius: 20px;
+            color: var(--mainTextColor);
+            position: relative;
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+
+}

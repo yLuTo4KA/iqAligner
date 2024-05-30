@@ -9,10 +9,7 @@ import { Result } from '../../models/Result.interface';
 })
 export class ChatService {
 
-  // private apiChatUrl: string = "http://51.21.85.46:8000/api/chat";
-  // private apiChatUrl: string = "http://172.20.10.4:8000/api/chat";
-  private apiChatUrl: string = "http://192.168.0.104:8000/api/chat";
-  
+  private apiChatUrl: string = "http://51.21.85.46:8000/api/chat";
 
   constructor(private http: HttpClient) { }
 

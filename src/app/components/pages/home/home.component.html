@@ -1,16 +1,19 @@
 <div class="home">
     <section class="section main">
-            <div class="block shadow">
-                <h1 class="title block-title text-gradient">Узнайте свой тип личности</h1>
-                <h2 class="block-subtitle">И идеальную для вас профессию</h2>
-                <div class="block-text">Наш сайт использует передовую AI для определения вашего типа личности и нахождения подходящей профессии. Просто ответьте на несколько вопросов, и мы поможем вам раскрыть ваш потенциал и найти идеальное направление для развития карьеры.</div>
-                <div class="block-menu">
-                    <button mat-fab extended class="btn btn--block btn--gradient margin-right20 block-menu-button" (click)="handleOpenChat()">Узнать тип</button>
-                    <button mat-fab extended class="btn btn--block btn--border">Подробнее</button>
-                </div>
+        <div class="block shadow">
+            <h1 class="title block-title text-gradient">Узнайте свой тип личности</h1>
+            <h2 class="block-subtitle">И идеальную для вас профессию</h2>
+            <div class="block-text">Наш сайт использует передовую AI для определения вашего типа личности и нахождения
+                подходящей профессии. Просто ответьте на несколько вопросов, и мы поможем вам раскрыть ваш потенциал и
+                найти идеальное направление для развития карьеры.</div>
+            <div class="block-menu">
+                <button mat-fab extended class="btn btn--block btn--gradient margin-right20 block-menu-button"
+                    (click)="handleOpenChat()">Узнать тип</button>
+                <button mat-fab extended class="btn btn--block btn--border">Подробнее</button>
             </div>
+        </div>
     </section>
-    <section class="section types">
+    <section class="section types" id="types">
         <h1 class="types__title">
             <span class="types__title-big">Помощник iQaligner</span>
             <span class="text-gradient">Для тех кто хочет определить свой тип личности</span>
@@ -23,34 +26,57 @@
             <span>И узнать подходящие вам профессии!</span>
         </p>
         <div class="types__buttons">
-            <button mat-fab extended class="btn btn--block btn--gradient margin-right20 block-menu-button" (click)="handleOpenChat()">Узнать тип</button>
+            <button mat-fab extended class="btn btn--block btn--gradient margin-right20 block-menu-button"
+                (click)="handleOpenChat()">Узнать тип</button>
         </div>
         <div class="types__images">
-            <img class="types__images-img" src="../../../../assets/laptop.png" alt="laptop">
+            <img class="types__images-img" src="assets/laptop.png" alt="laptop">
         </div>
     </section>
-    <section class="section stages">
-            <h1 class="section-title">Как это работает?</h1>
-            <ul class="stages__list">
-                <li class="stage stages__item">
-                    <h3 class="stage__count">
-                        Шаг 1
-                    </h3>
-                    <h2 class="stage__title text-gradient">
-                        Регистрация
-                    </h2>
-                    <p class="stage-text">Зарегистрируйтесь на нашем сайте и создайте свой профиль.</p>
-                </li>
-                <li class="stage stages__item">
-                    <h3 class="stage__count">
-                        Шаг 2
-                    </h3>
-                </li>
-                <li class="stage stages__item">
-                    <h3 class="stage__count">
-                        Шаг 3
-                    </h3>
-                </li>
-            </ul>
+    <section class="section stages" id="stages">
+        <h1 class="section-title">Как это работает?</h1>
+        <ul class="stages__list">
+            <li class="stage stages__item">
+                <h3 class="stage__count">
+                    Шаг 1
+                </h3>
+                <h2 class="stage__title text-gradient">
+                    Регистрация
+                </h2>
+                <p class="stage-text">Зарегистрируйтесь на нашем сайте и создайте свой профиль.</p>
+            </li>
+            <li class="stage stages__item">
+                <h3 class="stage__count">
+                    Шаг 2
+                </h3>
+            </li>
+            <li class="stage stages__item">
+                <h3 class="stage__count">
+                    Шаг 3
+                </h3>
+            </li>
+        </ul>
+    </section>
+    <section class="section reviews" id="reviews">
+        <h1 class="section-title">Наш Ассистент помог определиться уже более {{countReviews.count}} раз</h1>
+        <h2 class="section-subtitle reviews__subtitle">Вот что пишут наши пользователи</h2>
+        @if(loading) {
+        <div class="reviews__spinner">
+            <mat-spinner></mat-spinner>
+        </div>
+        }
+        @if(reviews) {
+        <swiper-container class="reviews__container" pagination="true" pagination-clickable="true" slides-per-view="2"
+        space-between="30" centered-slides="true" [breakpoints]="swiperBreakpoints" speed="2000" 
+        autoplay='{"delay": 4500, "disableOnInteraction": false}'>
+            @for(review of reviews; track review) {
+                <swiper-slide class="reviews__container-item">
+                    <app-review-card class="review__card" [reviewData]="review"></app-review-card>
+                </swiper-slide>
+            }
+        </swiper-container>
+        }@else if(!reviews && !loading) {
+            <p>Данных нет, проблемы с интернетом</p>
+        }
     </section>
 </div>
