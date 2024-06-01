@@ -10,8 +10,7 @@ import { UserService } from '../user/user.service';
 })
 export class AuthorizationService {
   
-  // private apiUrl: string = "http://51.21.85.46:8000/api";
-  private apiUrl: string = "http://192.168.0.100:8000/api";
+  private apiUrl: string = "http://51.21.85.46:8000/api";
 
   private loadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private tokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(this.getToken());
@@ -22,16 +21,6 @@ export class AuthorizationService {
   error$: Observable<string | null> = this.errorSubject.asObservable();
   
   constructor(private http: HttpClient, private userService: UserService) { }
-  
-  // get loading$(): Observable<boolean> {
-  //   return this.loadingSubject.asObservable();
-  // }
-  // get token$(): Observable<string | null> {
-  //   return this.tokenSubject.asObservable();
-  // }
-  // get error$(): Observable<string | null> {
-  //   return this.errorSubject.asObservable();
-  // }
 
   setToken(token: string): void {
     localStorage.setItem("token", token);

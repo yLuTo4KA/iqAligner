@@ -13,8 +13,7 @@ import { countReviews } from '../../models/Review.interface';
 
 export class ReviewsService {
   
-  // private apiUrl: string = "http://51.21.85.46:8000/api/reviews";
-  private apiUrl: string = "http://192.168.0.100:8000/api/reviews";
+  private apiUrl: string = "http://51.21.85.46:8000/api/reviews";
 
   private reviewsSubject: BehaviorSubject<Review[] | null> = new BehaviorSubject<Review[] | null>(null);
   private countReviewsSubject: BehaviorSubject<countReviews> = new BehaviorSubject<countReviews>({count: 0});
