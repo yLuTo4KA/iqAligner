@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 
 import { UserService } from '../../../services/user/user.service';
 import { User } from '../../../models/User.interface';
@@ -64,6 +64,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     const diplomeFactory = this.diplomeContainer.createComponent(DiplomeComponent);
     diplomeFactory.instance.diplomeData = diplomeData;
     diplomeFactory.instance.userData = userData;
+    this.loading = true;
     
    await new Promise(resolve => setTimeout(resolve, 1000));
     const diplomeElement = diplomeFactory.location.nativeElement;
@@ -83,6 +84,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
       // Удалите компонент после создания PDF
       this.diplomeContainer.clear();
+      this.loading = false;
     });
     
   }

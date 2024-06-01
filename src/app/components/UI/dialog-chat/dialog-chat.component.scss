@@ -58,6 +58,11 @@
         }
     }
 
+    &-error {
+        color: var(--red);
+        margin-right: 10px;
+    }
+
 }
 
 .open-variables-btn {

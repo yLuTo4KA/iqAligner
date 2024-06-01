@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -120,6 +120,7 @@ export class DialogChatComponent implements AfterViewInit, OnInit, OnDestroy {
               },
               error: error => {
                 this.error = true;
+                this.chatScrollBottom();
               }
             }
           )
@@ -138,7 +139,6 @@ export class DialogChatComponent implements AfterViewInit, OnInit, OnDestroy {
 
   nextQuestion(): void {
     this.createBotMessage(this.questions.questions[this.questionIndex].question);
-    this.chatScrollBottom();
     this.currentAnswrs = this.questions.questions[this.questionIndex].answers;
     this.questionIndex++;
   }
@@ -151,17 +151,21 @@ export class DialogChatComponent implements AfterViewInit, OnInit, OnDestroy {
     if (text) {
       botMessage.instance.text = text;
     }
+    this.chatScrollBottom();
   }
 
   createUserMessage() {
     const userMessage = this.chatArea.createComponent(UserMessageComponent);
     userMessage.instance.userData = this.userData;
     userMessage.instance.text = this.message;
+    this.chatScrollBottom();
   }
 
   chatScrollBottom() {
     const chatAreaElement = this.area.nativeElement;
-    chatAreaElement.scrollTo({ top: chatAreaElement.scrollHeight - chatAreaElement.clientHeight, behavior: "smooth" })
+    setTimeout(() => {
+      chatAreaElement.scrollTo({ top: chatAreaElement.scrollHeight - chatAreaElement.clientHeight, behavior: "smooth" })
+    }, 1000)
   }
   clearMessage() {
     this.message = '';

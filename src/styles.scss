@@ -116,13 +116,9 @@ html {
         font-size: $baseFontSize - 1px;
     }
 
-    ;
-
     @media screen and (max-width: 480px) {
         font-size: $baseFontSize - 2px;
     }
-
-    ;
 }
 
 body {
@@ -160,13 +156,6 @@ body {
     overflow: hidden;
 }
 
-
-/* You can add global styles to this file, and also import other style files */
-
-
-// .mat-mdc-dialog-surface{
-//     background-color: initial !important;
-// }
 a {
     padding: 0;
     margin: 0;
@@ -264,10 +253,10 @@ main {
     font-weight: bold;
 
     @media screen and (max-width: 768px) {
-        font-size: $titleFontSize - 10px;
+        font-size: $titleFontSize - 6px;
     }
     @media screen and (max-width: 480px) {
-        font-size: $titleFontSize - 12px;
+        font-size: $titleFontSize - 10px;
     }
 }
 
@@ -326,6 +315,7 @@ main {
     height: 100%;
     width: 100%;
     pointer-events: none;
+    object-fit: cover;
 }
 
 .shadow {
@@ -353,6 +343,7 @@ main {
     }
     &-title {
         line-height: 1.4;
+        margin-bottom: 20px;
     }
     &-actions {
         display: flex;
@@ -367,6 +358,8 @@ main {
     &-link {
         font-weight: 400;
         color: blue;
+        font-size: 16px;
+        padding: 5px 0;
     }
     &-error{
         color: red;
@@ -379,8 +372,15 @@ main {
     display: flex;
     margin-bottom: 25px;
 
+    &-name {
+        width: max-content;
+        font-weight: bold;
+    }
+
     
     &-text {
+        display: flex;
+        flex-direction: column;
         background-color: var(--bgColor);
         color: var(--mainTextColor);
         border-radius: 25px;

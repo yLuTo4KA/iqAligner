@@ -13,7 +13,7 @@
     <app-bot-message-typing></app-bot-message-typing>
     }
     @if(error) {
-        <span>Произошла ошибка </span><button mat-fab extended class="btn btn--gradient" (click)="initChat()">Попробовать снова</button>
+        <span class="dialog-error">Нестабильное интернет соединение</span><button mat-fab extended class="btn btn--gradient" (click)="initChat()">Попробовать снова</button>
     }
 </mat-dialog-content>
 <mat-dialog-actions class="dialog-actions dialog-chat-actions">

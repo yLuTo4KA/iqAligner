@@ -16,11 +16,11 @@
 
     &__nav {
         display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
         @media screen and (max-width: 768px) {
             display: none;
-        };
-        
-
+        }
         &-link {
             margin-right: 45px;
 
@@ -29,7 +29,17 @@
             }
         }
     }
-    &__profile-info {
-        display: flex;
+    &__profile {
+        &-info {
+            display: flex;
+        }
+        &-avatar {
+            background: var(--gradient);
+            padding: 2px;
+            &-img {
+                border-radius: 50%;
+            }
+        }
     }
+
 }

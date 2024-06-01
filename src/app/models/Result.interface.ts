@@ -1,5 +1,5 @@
 export interface Result {
-    analys: string,
+    analysis: string,
     description: string,
     profession: string[],
     type: string,

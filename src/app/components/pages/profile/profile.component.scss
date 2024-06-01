@@ -31,7 +31,7 @@
         position: relative;
         @media screen and (max-width: 480px) {
             margin-right: 0;
-            margin-bottom: 40px;
+            margin-bottom: 60px;
         }
         &::before {
             content: "";    
@@ -51,12 +51,16 @@
         }
         &-btn {
             width: 100%;
+            font-size: 18px;
             justify-content: center;
+            position: absolute;
+            bottom: -35px;
         }
     }
 
     &__user-data {
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-between;
         align-items: center;
         width: 100%;
@@ -91,9 +95,6 @@
         padding: 100px 0;
     }
     &__result {
-        &-history{
-
-        }
         &-null {
             color: var(--placeholderColor);
             text-align: center;

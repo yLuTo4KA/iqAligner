@@ -6,13 +6,12 @@
         <a routerLink="/home" class="header__nav-link">Главная</a>
         <a routerLink="/home" fragment="types" class="header__nav-link">Информация</a>
         <a routerLink="/home" fragment="reviews" class="header__nav-link">Отзывы</a>
-        <a routerLink="/home" fragment="contacts" class="header__nav-link">Контакты</a>
     </nav>
     <div class="header__profile-info">
         @if(!userData) {
             <button mat-fab extended class="btn btn--block btn--gradient header__btn-auth" (click)="openAuthDialog()">Войти</button>
         } @else {
-            <button routerLink="/profile" class="btn btn--mini btn--gradient margin-right20"><img [src]="userData.avatar" class="img"></button>
+            <button routerLink="/profile" class="btn btn--mini btn--gradient margin-right20 header__profile-avatar"><img [src]="userData.avatar" class="img header__profile-avatar-img"></button>
             <button mat-fab class="btn btn--mini btn--gradient" (click)="handleLogout()" routerLink="/home"><mat-icon>exit_to_app</mat-icon></button>
         }
     </div>

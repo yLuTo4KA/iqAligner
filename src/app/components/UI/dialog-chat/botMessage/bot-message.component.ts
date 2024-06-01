@@ -41,21 +41,23 @@ export class BotMessageComponent implements OnInit, OnChanges{
     if(this.answer) {
       console.log("Answer!")
       this.detectTypeColor(this.answer.type);
-      this.typeText(this.answer.analys);
+      this.typeText(this.answer.analysis);
     }
   }
 
   typeText(text: string): void {
     let ndx = 0;
-    const interval = setInterval(() => {
-      if(ndx < text.length) {
-        this.printedText += text.charAt(ndx);
-        ndx++;
-      }else {
-        this.viewBtnReview = true;
-        clearInterval(interval);
-      }
-    }, 50);
+    if(text) {
+      const interval = setInterval(() => {
+        if(ndx < text.length) {
+          this.printedText += text.charAt(ndx);
+          ndx++;
+        }else {
+          this.viewBtnReview = true;
+          clearInterval(interval);
+        }
+      }, 50);
+    }
   }
 
   detectTypeColor(type: string): void {
