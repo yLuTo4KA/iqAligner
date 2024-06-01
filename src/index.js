@@ -20,7 +20,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://192.168.0.100:4200"); // Указываем домен клиентского приложения
+    res.setHeader("Access-Control-Allow-Origin", "http://192.168.0.100:4200");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
     res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/browser', express.static(path.join(__dirname, 'browser')));
+app.use('/iqAligner', express.static(path.join(__dirname, 'browser')));
 
 app.get('/iqAligner', (req, res) => {
     res.sendFile(path.join(__dirname, 'browser', 'index.html'));
@@ -38,6 +38,15 @@ app.get('/iqAligner', (req, res) => {
 app.get('/iqAligner/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'browser', 'index.html'));
 });
+// Middleware для перенаправления всех запросов, не относящихся к API, на /iqAligner
+app.use((req, res, next) => {
+    if (!req.path.startsWith('/api')) {
+        res.redirect('/iqAligner');
+    } else {
+        next();
+    }
+});
+
 
 function deleteFile(filePath) {
     fs.unlink(filePath, (err) => {
