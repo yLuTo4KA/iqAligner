@@ -20,7 +20,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://172.20.10.4:4200, http://52.21.85.46:4200"); // Указываем домен клиентского приложения
+    res.setHeader("Access-Control-Allow-Origin", "http://192.168.0.100:4200"); // Указываем домен клиентского приложения
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
     res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -29,6 +29,15 @@ app.use((req, res, next) => {
 
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/browser', express.static(path.join(__dirname, 'browser')));
+
+app.get('/iqAligner', (req, res) => {
+    res.sendFile(path.join(__dirname, 'browser', 'index.html'));
+});
+
+app.get('/iqAligner/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'browser', 'index.html'));
+});
 
 function deleteFile(filePath) {
     fs.unlink(filePath, (err) => {
@@ -237,7 +246,7 @@ app.post("/api/chat/start", verifyToken, async (req, res) => {
     try {
         const { userId } = req.user;
         const completion = await openai.chat.completions.create({
-            messages: [{ role: "system", content: "Определять тип личности пользователя ( Меланхолик, Сангвинник, Холерик, Флегматик ) Так же определить профессии подходящие этому человку. " }, { role: "user", content: "Придумай 10 вопросов состоящих из минимум 15 слов до 30 довольно углубленных для опредления точного типа личности пользовтеля и по 4 варианта ответа для каждого и отправь их в виде json questions: [{вопрос (только вопрос без вариантов ответа в нем), [4ответа]}"}],
+            messages: [{ role: "system", content: "Определять тип личности пользователя ( Меланхолик, Сангвинник, Холерик, Флегматик ) Так же определить профессии подходящие этому человку. " }, { role: "user", content: "Придумай 10 вопросов состоящих из минимум 15 слов до 30 довольно углубленных для опредления точного типа личности пользовтеля и по 4 варианта ответа для каждого и отправь их в виде json questions: [{question: вопрос (только вопрос без вариантов ответа в нем), answers: [4ответа]}"}],
             model: "gpt-3.5-turbo",
         });
         const questions = JSON.parse(completion.choices[0].message.content);
@@ -264,7 +273,7 @@ app.post("/api/chat/getAnswer", verifyToken, async (req, res) => { // userAnswer
         };
 
         const completion = await openai.chat.completions.create({
-            messages: [{ role: "system", content: `Определять тип личности пользователя ( Меланхолик, Сангвинник, Холерик, Флегматик ) Так же определить профессии подходящие этому человку.  Вот список вопросов = ${questions}, ответ должен быть в виде json type: (тип личности), profession: (массив с подходящими профессиями от 10шт до 15шт), description: (описание типа личности 100+ слов), analys: (подробный анализ ответов пользователя 200+ слов)` }, { role: "user", content: `Вот ответы на эти вопросы: ${userAnswer}` }],
+            messages: [{ role: "system", content: `Определять тип личности пользователя ( Меланхолик, Сангвинник, Холерик, Флегматик ) Так же определить профессии подходящие этому человку. json {type: (тип личности), profession: (массив с подходящими профессиями от 10шт до 15шт), description: (описание типа личности 100+ слов), analysis: (подробный анализ ответов пользователя 200+ слов)}` }, { role: "user", content: ` Вот список вопросов = ${questions}. Вот ответы на эти вопросы: ${userAnswer}. ответ должен быть в виде json {type: (тип личности), profession: (массив с подходящими профессиями от 10шт до 15шт), description: (описание типа личности 100+ слов), analysis: (подробный анализ ответов пользователя 200+ слов)}` }],
             model: "gpt-3.5-turbo",
         });
         const updatedAnswer = await AnswerModel.findOneAndUpdate(
