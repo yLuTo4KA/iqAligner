@@ -1,5 +1,6 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, OnDestroy, OnInit } from '@angular/core';
 import { MatFabButton } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 import { DialogsService } from '../../../services/dialogs/dialogs.service';
 import { Review } from '../../../models/Review.interface';
@@ -9,14 +10,16 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { ReviewCardComponent } from '../../UI/review-card/review-card.component';
 
+
 import { countReviews } from '../../../models/Review.interface';
 import { ActivatedRoute, Router } from '@angular/router';
+
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatFabButton, MatProgressSpinnerModule, ReviewCardComponent],
+  imports: [MatFabButton, MatProgressSpinnerModule, ReviewCardComponent, MatIconModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

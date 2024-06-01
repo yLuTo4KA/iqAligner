@@ -33,30 +33,6 @@
             <img class="types__images-img" src="assets/laptop.png" alt="laptop">
         </div>
     </section>
-    <section class="section stages" id="stages">
-        <h1 class="section-title">Как это работает?</h1>
-        <ul class="stages__list">
-            <li class="stage stages__item">
-                <h3 class="stage__count">
-                    Шаг 1
-                </h3>
-                <h2 class="stage__title text-gradient">
-                    Регистрация
-                </h2>
-                <p class="stage-text">Зарегистрируйтесь на нашем сайте и создайте свой профиль.</p>
-            </li>
-            <li class="stage stages__item">
-                <h3 class="stage__count">
-                    Шаг 2
-                </h3>
-            </li>
-            <li class="stage stages__item">
-                <h3 class="stage__count">
-                    Шаг 3
-                </h3>
-            </li>
-        </ul>
-    </section>
     <section class="section reviews" id="reviews">
         <h1 class="section-title">Наш Ассистент помог определиться уже более {{countReviews.count}} раз</h1>
         <h2 class="section-subtitle reviews__subtitle">Вот что пишут наши пользователи</h2>
@@ -67,16 +43,116 @@
         }
         @if(reviews) {
         <swiper-container class="reviews__container" pagination="true" pagination-clickable="true" slides-per-view="2"
-        space-between="30" centered-slides="true" [breakpoints]="swiperBreakpoints" speed="2000" 
-        autoplay='{"delay": 4500, "disableOnInteraction": false}'>
+            space-between="30" centered-slides="true" [breakpoints]="swiperBreakpoints" speed="2000"
+            autoplay='{"delay": 4500, "disableOnInteraction": false}'>
             @for(review of reviews; track review) {
-                <swiper-slide class="reviews__container-item">
-                    <app-review-card class="review__card" [reviewData]="review"></app-review-card>
-                </swiper-slide>
+            <swiper-slide class="reviews__container-item box-shadow">
+                <app-review-card class="review__card" [reviewData]="review"></app-review-card>
+            </swiper-slide>
             }
         </swiper-container>
         }@else if(!reviews && !loading) {
-            <p>Данных нет, проблемы с интернетом</p>
+        <p>Данных нет, проблемы с интернетом</p>
         }
+        <p class="section-subtitle">( Вы можете оставить отзыв, пройдя тест на определение личности )</p>
     </section>
+    <section class="section process" id="process">
+        <h1 class="section-title">
+            Как проходит процесс
+        </h1>
+        <ul class="process__list">
+            <li class="process__item">
+                <div class="process__item-wrapper">
+                    <div class="process__item-icon"><mat-icon class="process__item-icon-img">how_to_reg</mat-icon></div>
+                    <div class="process__item-content">
+                        <h3 class="process__item-title text-gradient">Регистрация на сайте</h3>
+                        <div class="process__item-text">Для получения доступа к нашему чату с ИИ, необходимо
+                            зарегестрироваться на нашем сайте.</div>
+                    </div>
+                </div>
+                <div class="process__item-index">I</div>
+            </li>
+            <li class="process__item">
+                <div class="process__item-wrapper">
+                    <div class="process__item-icon"><mat-icon class="process__item-icon-img">contact_support</mat-icon>
+                    </div>
+                    <div class="process__item-content">
+                        <h3 class="process__item-title text-gradient">Начало диалога с ИИ</h3>
+                        <div class="process__item-text">Начните проходить короткий тест составленный нашим ИИ для
+                            определения типа личности и профессии.</div>
+                    </div>
+                </div>
+                <div class="process__item-index">II</div>
+            </li>
+            <li class="process__item">
+                <div class="process__item-wrapper">
+                    <div class="process__item-icon"><mat-icon class="process__item-icon-img">psychology</mat-icon></div>
+                    <div class="process__item-content">
+                        <h3 class="process__item-title text-gradient">Анализ ваших ответов</h3>
+                        <div class="process__item-text">После того как вы пройдете тест, наш ИИ проанализирует ваши
+                            ответы и выдаст вам ваш результат.</div>
+                    </div>
+                    <div class="process__item-index">III</div>
+                </div>
+            </li>
+            <li class="process__item">
+                <div class="process__item-wrapper">
+                    <div class="process__item-icon"><mat-icon
+                            class="process__item-icon-img">workspace_premium</mat-icon></div>
+                    <div class="process__item-content">
+                        <h3 class="process__item-title text-gradient">Получение сертификата</h3>
+                        <div class="process__item-text">После получения результата, в профиле вы можете посмотреть его,
+                            а так же скачать ваш сертификат.</div>
+                    </div>
+                    <div class="process__item-index">IV</div>
+                </div>
+            </li>
+        </ul>
+
+    </section>
+    <section class="section important" id="important">
+        <h1 class="section-title">Почему важно отвечать честно?</h1>
+        <p class="section-subtitle">( Помните, что все ваши данные будут храниться конфиденциально и не будут переданы
+            третьим лицам. Наша главная цель – помочь вам найти свой путь к успеху! )</p>
+        <ul class="important__list">
+            <li class="important__item">
+                <div class="important__item-wrapper">
+                    <div class="important__item-icon">
+                        <mat-icon class="process__item-icon-img">crisis_alert</mat-icon>
+                    </div>
+                    <div class="important__item-content">
+                        <h3 class="important__item-title text-gradient">Точность результатов</h3>
+                        <p class="important__item-text">Честные ответы обеспечат точное определение вашего типа личности и наиболее подходящей профессии. Если вы предоставите точную информацию о своих предпочтениях, навыках и опыте, ИИ сможет предложить вам варианты карьерного пути, которые наиболее соответствуют вашим сильным сторонам и интересам. Это поможет избежать неверных рекомендаций и сэкономит ваше время.
+                        </p>
+                    </div>
+                </div>
+            </li>
+            <li class="important__item">
+                <div class="important__item-wrapper">
+                    <div class="important__item-icon">
+                        <mat-icon class="process__item-icon-img">mood</mat-icon>
+                    </div>
+                    <div class="important__item-content">
+                        <h3 class="important__item-title text-gradient">Личная удовлетворенность</h3>
+                        <p class="important__item-text">Искренние ответы помогут лучше понять себя и найти карьеру, которая действительно вам подходит. Когда вы отвечаете честно, ИИ может более точно выявить ваши мотивации, интересы и ценности, что позволит предложить вам профессии и роли, которые будут приносить вам больше удовлетворения и счастья в долгосрочной перспективе.
+                        </p>
+                    </div>
+                </div>
+            </li>
+            <li class="important__item">
+                <div class="important__item-wrapper">
+                    <div class="important__item-icon">
+                        <mat-icon class="process__item-icon-img">loyalty</mat-icon>
+                    </div>
+                    <div class="important__item-content">
+                        <h3 class="important__item-title text-gradient">Эффективность рекомендаций</h3>
+                        <p class="important__item-text">Наши рекомендации будут полезны только в том случае, если они основаны на реальной информации о вас. Честные ответы обеспечат более точные и персонализированные рекомендации, которые помогут вам развивать карьеру, соответствующую вашим настоящим потребностям и целям. Это повысит шансы на ваш профессиональный успех и личное удовлетворение от работы.
+                        </p>
+                    </div>
+                </div>
+            </li>
+            
+        </ul>
+    </section>
+   
 </div>

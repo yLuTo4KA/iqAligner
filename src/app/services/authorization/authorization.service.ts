@@ -43,7 +43,7 @@ export class AuthorizationService {
     this.errorSubject.next(null);
     return this.http.post<any>(this.apiUrl + "/reg", regData).pipe(
       tap(response => {
-        if(response && response.token) {
+        if(response.token) {
           this.setToken(response.token);
         }
       }),

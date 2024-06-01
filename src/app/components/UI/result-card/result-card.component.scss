@@ -67,7 +67,9 @@
         }
         &-download {
             margin-right: 10px;
-            background-color: var(--green);
+            background-color: var(--bgColor);
+            color: var(--mainTextColor);
+            border: 1px solid var(--mainTextColor);
         }
 
     }

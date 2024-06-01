@@ -3,9 +3,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, finalize, Observable, tap, throwError } from 'rxjs';
 
 
-import { generatedReview, Review } from '../../models/Review.interface';
+import { generatedReview, Review, countReviews } from '../../models/Review.interface';
 
-import { countReviews } from '../../models/Review.interface';
 
 @Injectable({
   providedIn: 'root'
