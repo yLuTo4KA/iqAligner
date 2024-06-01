@@ -49,6 +49,11 @@ $IQaligner-theme: mat.define-light-theme((color: (primary: $IQaligner-primary,
 .mat-mdc-form-field {
     display: flex !important;
 }
+input::-ms-reveal,
+      input::-ms-clear {
+        display: none;
+      }
+
 .mat-mdc-text-field-wrapper {
     background: var(--elemBgColor) !important;
     color: var(--mainTextColor);
@@ -60,6 +65,8 @@ $IQaligner-theme: mat.define-light-theme((color: (primary: $IQaligner-primary,
 .mat-mdc-input-element::placeholder {
     color: var(--placeholderColor) !important;
 }
+
+  
 
 // --mat-form
 
@@ -126,7 +133,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     height: 100%;
-    background-color: var(--bgColor);
+    background-color: var(--bgColor) !important;
     color: var(--mainTextColor);
  
 

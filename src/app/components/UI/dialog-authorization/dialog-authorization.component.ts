@@ -6,7 +6,7 @@ import { FormGroup, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field'
+import { MatFormFieldModule, MatSuffix } from '@angular/material/form-field'
 import { MatInputModule } from "@angular/material/input";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatDialog } from '@angular/material/dialog';
@@ -24,7 +24,7 @@ interface login {
 @Component({
   selector: 'app-dialog-authorization',
   standalone: true,
-  imports: [FormsModule, MatIconModule, MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule, HttpClientModule, MatProgressSpinnerModule, ReactiveFormsModule],
+  imports: [FormsModule, MatIconModule, MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule, HttpClientModule, MatProgressSpinnerModule, ReactiveFormsModule, MatSuffix],
   templateUrl: './dialog-authorization.component.html',
   styleUrl: './dialog-authorization.component.scss'
 })

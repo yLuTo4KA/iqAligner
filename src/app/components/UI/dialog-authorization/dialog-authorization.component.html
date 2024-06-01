@@ -28,7 +28,7 @@
                 <mat-label>Пароль</mat-label>
                 <input matInput placeholder="Пароль" [type]="passwordVisibility ? 'text' : 'password'"
                     formControlName="password">
-                <mat-icon (click)="passwordVisibility = !passwordVisibility" matSuffix
+                <mat-icon matSuffix (click)="passwordVisibility = !passwordVisibility"
                     style="cursor: pointer;">{{passwordVisibility ? 'visibility_off' : 'visibility'}}</mat-icon>
                 @if(loginForm.controls['password'].invalid && (loginForm.controls['password'].touched ||
                 loginFormSubmit)){
