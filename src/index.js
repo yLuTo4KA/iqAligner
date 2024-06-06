@@ -372,7 +372,7 @@ app.post("/api/profile/update-avatar", verifyToken, upload.single('avatar'), asy
         if(!user) {
             return res.status(404).send("Пользователь не найден");
         }
-        if (user.avatar) {
+        if (user.avatar && user.avatar !== '/uploads/default.png') {
             const previousAvatarPath = path.join(__dirname, user.avatar);
             deleteFile(previousAvatarPath);
         }
