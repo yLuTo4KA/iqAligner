@@ -87,6 +87,7 @@ export class DialogChatComponent implements AfterViewInit, OnInit, OnDestroy {
           }, 100)
         },
         error: error => {
+          this.chatScrollBottom();
           this.error = true;
         }
       })

@@ -12,14 +12,14 @@ import { ReviewCardComponent } from '../../UI/review-card/review-card.component'
 
 
 import { countReviews } from '../../../models/Review.interface';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatFabButton, MatProgressSpinnerModule, ReviewCardComponent, MatIconModule],
+  imports: [MatFabButton, MatProgressSpinnerModule, ReviewCardComponent, MatIconModule, RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

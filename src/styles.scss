@@ -49,9 +49,8 @@ $IQaligner-theme: mat.define-light-theme((color: (primary: $IQaligner-primary,
 .mat-mdc-form-field {
     display: flex !important;
 }
-input::-ms-reveal,
-      input::-ms-clear {
-        display: none;
+input::-ms-reveal, input::-ms-clear {
+        display: none !important;
       }
 
 .mat-mdc-text-field-wrapper {
@@ -332,6 +331,11 @@ main {
 }
 
 .dialog {
+    &-content {
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
     &-btn {
         &-close {
             align-self: flex-end;

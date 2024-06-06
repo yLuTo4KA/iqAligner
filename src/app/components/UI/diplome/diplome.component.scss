@@ -8,12 +8,18 @@
     color: #232323;
     height: 100%;
     position: relative;
+    background: white;
     &__header {
         text-align: center;
         font-size: 33px;
         margin-bottom: 20px;
+        margin-right: -20px;
+        background: white;
     }
     &__content {
+        background: white;
+        height: 100%;
+        margin: 0 -15px 0 -20px;
         &-user {
            text-align: center;
            margin-bottom: 40px;
@@ -81,6 +87,7 @@
         justify-content: space-between;
         padding: 10px 10px 50px 10px;
         color: rgb(75, 75, 75);
+        background: white;
         &-name {
             margin-right: 10px;
         }
