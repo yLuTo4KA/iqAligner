@@ -17,7 +17,8 @@ export class DialogChangeAvatarComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
   public selectedFile: File | null = null;
   public loading: boolean = false;
-  public statusMessage: string | null = null
+  public statusMessage: string | null = null;
+  public dragOver: boolean = false;
 
   constructor(private matDialog: MatDialog, private userService: UserService){}
   
@@ -45,6 +46,24 @@ export class DialogChangeAvatarComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.dragOver = true;
+  }
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.dragOver = false;
+  }
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.dataTransfer && event.dataTransfer.files.length > 0) {
+      this.selectedFile = event.dataTransfer.files[0];
+      this.statusMessage = '';
+    }
   }
   onFileChange(event: any): void {
     this.selectedFile = event.target.files[0] as File;

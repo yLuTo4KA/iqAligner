@@ -5,14 +5,12 @@
     </button>
 </header>
 <mat-dialog-content class="dialog-content dialog-change-avatar">
-    <label for="avatarInput" class="change-avatar__area">
+    <label for="avatarInput" class="change-avatar__area" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
         <mat-icon style="transform: scale(2.5); margin-bottom: 25px;">upload</mat-icon>
         <p style="text-align: center;">Выбирите файл или ператащите его сюда</p>
         @if(selectedFile) {
             <p class="text-gradient">Выбран файл: {{selectedFile.name}}</p>
         }
-        
-        
     </label>
     <input id="avatarInput" type="file" (change)="onFileChange($event)" style="display: none;">
     <button  mat-fab extended class="btn btn--gradient" (click)="onSubmit()" [disabled]="selectedFile === null">Загрузить аватар</button>
