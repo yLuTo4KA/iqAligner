@@ -20,7 +20,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://192.168.0.100:4200");
+    res.setHeader("Access-Control-Allow-Origin", "http://192.168.0.108:4200");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
     res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -250,7 +250,6 @@ app.post("/api/login", async (req, res) => {
     }
 });
 // GPT 
-const def = "Придумай 10 вопросов и отправь их в виде массива js";
 app.post("/api/chat/start", verifyToken, async (req, res) => {
     try {
         const { userId } = req.user;
@@ -409,76 +408,6 @@ app.delete("/api/profile/removeAnswer", verifyToken, async (req, res) => {
     }
 })
 
-
-
-
-// Assistant
-
-// async function startChat(userId) {
-//     try{
-//         const thread = await openai.beta.threads.create();
-//         const newAnswer = new AnswerModel({
-//             user: userId,
-//             thread: thread.id
-//         });
-
-//         await newAnswer.save();
-//         return newAnswer;
-//     } catch(e) {
-//         console.log(e);
-//     }
-// }
-// async function getThreadFromDB(chatID){
-//     try{
-//         const chat = await AnswerModel.findOne({_id: chatID})
-//         return chat;
-//     }catch(e) {
-//         console.log(e);
-//         return null;
-//     }
-// }
-// // Создать функцию для получения thread из бд.
-// app.post("/api/chat/start", verifyToken, async(req, res) => {
-//     try{
-//         const { userId } = req.user;
-//         await startChat(userId);
-//         res.status(201).send("Chat Started!");
-//     }catch(e) {
-//         res.status(404).send(e || "Error");
-//     }
-// })
-
-// app.post("/api/chat/sendMessage", verifyToken, async(req, res) => {
-//     try{
-//         const chat = await getThreadFromDB(req.body.chatID);
-//         const user = req.user;
-//         if(chat.user.toString() !== user.userId) {
-//             return res.status(502).send("chat is not auth user");
-//         }
-//         // const run = await openai.beta.threads.runs.create(
-//         //     chat.thread,
-//         //     { assistant_id: "asst_HxCFyHcRdumF1T53UGaqqiXx" }
-//         // );
-//         console.log(123);
-
-//         const sendMessage = await openai.beta.threads.messages.create(
-//             chat.thread,
-//             {role: "user", content: req.body.message}
-//         )
-
-//         res.status(200).send("good, message send!");
-//     }catch(e){
-//         res.status(500).send(e);
-//     }
-// })
-
-//
-
-
-
-
-
-const START = 0;
 // START SERVER
 app.listen(port, host, () => {
     console.log(`Server is running 🚀🚀🚀, port: ${port}`);
