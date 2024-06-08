@@ -60,6 +60,7 @@ export class DialogChangeAvatarComponent implements OnInit, OnDestroy {
   onDrop(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
+    this.dragOver = false;
     if (event.dataTransfer && event.dataTransfer.files.length > 0) {
       this.selectedFile = event.dataTransfer.files[0];
       this.statusMessage = '';

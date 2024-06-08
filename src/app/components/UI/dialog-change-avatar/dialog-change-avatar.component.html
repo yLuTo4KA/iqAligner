@@ -6,7 +6,7 @@
 </header>
 <mat-dialog-content class="dialog-content dialog-change-avatar">
     <label for="avatarInput" class="change-avatar__area" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
-        <mat-icon style="transform: scale(2.5); margin-bottom: 25px;">upload</mat-icon>
+        <mat-icon style="transform: scale(2.5); margin-bottom: 25px;" [class]="dragOver ? 'dragOver' : 'dragLeave'">upload</mat-icon>
         <p style="text-align: center;">Выбирите файл или ператащите его сюда</p>
         @if(selectedFile) {
             <p class="text-gradient">Выбран файл: {{selectedFile.name}}</p>

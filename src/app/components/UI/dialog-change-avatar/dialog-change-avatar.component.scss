@@ -17,3 +17,12 @@
         border-radius: 20px;
     }
 }
+
+.dragOver {
+    scale: 1.5;
+    transition: all 1s !important;
+}
+.dragLeave {
+    scale: 1;
+    transition: all 1s;
+}
