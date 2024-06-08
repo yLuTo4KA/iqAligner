@@ -64,6 +64,15 @@ input::-ms-reveal, input::-ms-clear {
 .mat-mdc-input-element::placeholder {
     color: var(--placeholderColor) !important;
 }
+@media (max-width: 599px) {
+    .dialog-chat-custom.cdk-overlay-pane.mat-mdc-dialog-panel {
+         max-width: none !important; 
+    }
+}
+.dialog-chat-custom.cdk-overlay-pane.mat-mdc-dialog-panel {
+     max-width: none !important;
+     min-width: none !important;
+}
 
   
 
@@ -331,6 +340,11 @@ main {
 }
 
 .dialog {
+    &-container {
+        display: flex;
+        flex-direction: column;
+        height: 80vh;
+    }
     &-content {
         &::-webkit-scrollbar {
             display: none;

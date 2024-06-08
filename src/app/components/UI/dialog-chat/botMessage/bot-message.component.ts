@@ -56,7 +56,7 @@ export class BotMessageComponent implements OnInit, OnChanges{
           this.viewBtnReview = true;
           clearInterval(interval);
         }
-      }, 50);
+      }, 25);
     }
   }
 

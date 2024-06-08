@@ -29,7 +29,7 @@ export class DialogsService {
 
   openChatDialog(): void {
     if(this.token !== null) {
-      this.matDialog.open(DialogChatComponent, {width: '600px'});
+      this.matDialog.open(DialogChatComponent, {panelClass: 'dialog-chat-custom',width: '600px'});
     } else {
       this.openAuthDialog();
     }
